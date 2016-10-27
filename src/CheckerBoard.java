@@ -58,8 +58,7 @@ public class CheckerBoard extends JPanel
 
                 /******************************** Initial Board Background ********************************/
 
-
-                int color = 1;
+                int color = 0;
                 int x = 0;
                 int y = 0;
 
@@ -69,51 +68,30 @@ public class CheckerBoard extends JPanel
 
                         boardSpaces[A] = new CheckerBoardSpace(color, A, x, y);
 
-                        if(x % 7 == 0 && x > 0)
+                        if(y == 7)
                         {
-                                color = 0;
-                                x = 0;
-                                y++;
+                                x++;
+                                y = 0;
+                                color = (color % 2); // makes sure that the next row begins with an alternating color
                         }
                         else
                         {
+                                y++;
                                 color++;
-                                x++;
                         }
 
                 }
 
-                // draws the Checker board
+                // draws the Checkers board
                 JPanel currentRectangle;
-                Color currentSpaceColor;
-                for(int A = 0 ; A < 8 ; A++)
+                CheckerBoardSpace currentSpace;
+                for(int A = 0 ; A < 64 ; A++)
                 {
+                        currentRectangle = new JPanel();
+                        currentSpace = boardSpaces[A];
 
-                        if( this.boardSpaces[A].spaceColor == "Red" )
-                        {
-                                currentSpaceColor = Color.RED;
-                        }
-                        else
-                        {
-                                currentSpaceColor = Color.BLACK;
-                        }
-                        for(int B = 0 ; B < 8 ; B++)
-                        {
-                                currentRectangle = new JPanel();
-
-                                if(currentSpaceColor == Color.RED)
-                                {
-                                        currentSpaceColor = Color.BLACK;
-                                }
-                                else
-                                {
-                                        currentSpaceColor = Color.RED;
-                                }
-
-                                currentRectangle.setBackground(currentSpaceColor);
-                                gameBoardBackground.add(currentRectangle);
-                        }
-
+                        currentRectangle.setBackground(currentSpace.spaceColor);
+                        gameBoardBackground.add(currentRectangle);
                 }
                 gameBoard.add(gameBoardBackground);
                 /****************************************************************/

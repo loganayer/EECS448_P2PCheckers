@@ -2,29 +2,29 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public class CheckerBoardSpace extends JComponent
+public class CheckerBoardSpace extends JPanel
 {
-        public String spaceColor; // red or black
+        public Color spaceColor; // red or black
         public int spaceIndex; // number 0-63, with left to right from top to bottom
 
-        public int xLocation;
-        public int yLocation;
+        public int xBoardLocation;
+        public int yBoardLocation;
 
         public CheckerBoardSpace(int color, int index, int x, int y)
         {
 
                 if(color % 2 == 0)
                 {
-                        this.spaceColor = "Red";
+                        this.spaceColor = Color.RED;
                 }
                 else
                 {
-                        this.spaceColor = "Black";
+                        this.spaceColor = Color.BLACK;
                 }
 
                 this.spaceIndex = index;
-                this.xLocation = x;
-                this.yLocation = y;
+                this.xBoardLocation = x;
+                this.yBoardLocation = y;
         }
 
 
