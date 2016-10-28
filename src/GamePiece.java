@@ -28,7 +28,8 @@ public class GamePiece extends JPanel
         {
                 super.paintComponent(graphics);
                 graphics.setColor(this.pieceColor);
-                graphics.fillOval(this.xBoardLocation, this.yBoardLocation, 60, 60);
+                graphics.drawOval(10, 10, 60, 60);
+                graphics.fillOval(10, 10, 60, 60);
         }
 
 }

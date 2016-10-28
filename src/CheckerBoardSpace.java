@@ -28,4 +28,13 @@ public class CheckerBoardSpace extends JPanel
         }
 
 
+        public void paintComponent(Graphics graphics)
+        {
+                super.paintComponent(graphics);
+                graphics.setColor(this.spaceColor);
+                graphics.drawRect(0, 0, 80, 80);
+                graphics.fillRect(0, 0, 80, 80);
+        }
+
+
 }
