@@ -1,3 +1,5 @@
+package com.groupone.p2pgame;
+
 import javax.swing.*;
 import java.awt.*;
 import java.lang.Math;
