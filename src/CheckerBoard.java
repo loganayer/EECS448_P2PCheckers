@@ -14,10 +14,8 @@ public class CheckerBoard extends JPanel
         public Container gameBoardBackground;
         public Container gameBoardPieces;
 
-
-        public int[] redPiecesLocations;
-        public int[] blackPiecesLocations;
-
+        public boolean boardInitialize;
+        public static int[] spaceValue = new int[64]; //-1 == black piece, 0 == empty space, 1 == red piece
 
 
 
@@ -58,42 +56,67 @@ public class CheckerBoard extends JPanel
 
                 /******************************** Initial Board Background ********************************/
 
-                int color = 0;
-                int x = 0;
-                int y = 0;
 
-                // creates CheckerBoardSpace objects
-                for(int A = 0 ; A < 64 ; A++)
-                {
+                ImageIcon bs = new ImageIcon("img/blackSquare.png");
+                ImageIcon rs = new ImageIcon("img/redSquare.png");
+                ImageIcon rsrp = new ImageIcon("img/redSquareRedPiece.png");
+                ImageIcon rsbp = new ImageIcon("img/redSquareBlackPiece.png");
 
-                        boardSpaces[A] = new CheckerBoardSpace(color, A, x, y);
-
-                        if(y == 7)
-                        {
-                                x++;
-                                y = 0;
-                                color = (color % 2); // makes sure that the next row begins with an alternating color
-                        }
-                        else
-                        {
-                                y++;
-                                color++;
-                        }
-
-                }
-
-                // draws the Checkers board
+                JLabel labels[] = new JLabel[(64)];
                 JPanel currentRectangle;
                 CheckerBoardSpace currentSpace;
-                for(int A = 0 ; A < 64 ; A++)
+                if(!boardInitialize)
+                //red == {1, 3, 5, 7, 8, 10, 12, 14, 17, 19, 21, 23};
+                //black == {40, 42, 44, 46, 49, 51, 53, 55, 56, 58, 60, 62};
                 {
-                        currentRectangle = new JPanel();
-                        currentSpace = boardSpaces[A];
 
-                        currentRectangle.setBackground(currentSpace.spaceColor);
-                        gameBoardBackground.add(currentRectangle);
-                }
-                gameBoard.add(gameBoardBackground);
+                  for(int A = 0 ; A < 64 ; A++)
+                  {
+                    if(A == 1 || A == 3 ||A == 5 ||A == 7 ||A == 8 ||A == 10 ||A == 12 ||A == 14 ||A == 17 ||A == 19 ||A == 21 ||A == 23)
+                    {
+                          labels[A] = new JLabel(rsrp);
+                          spaceValue[A] = 1;
+                    }
+                    else if(A == 40 || A == 42 ||A == 44 ||A == 46 ||A == 49 ||A == 51 ||A == 53 ||A == 55 ||A == 56 ||A == 58 ||A == 60 ||A == 62)
+                    {
+                          labels[A] = new JLabel(rsbp);
+                          spaceValue[A] = -1;
+                    }
+                    else if(A == 24 ||A == 26 ||A == 28 ||A == 30 ||A == 33 ||A == 35 ||A == 37 ||A == 39)
+                    {
+                          labels[A] = new JLabel(rs);
+                          spaceValue[A] = 0;
+                    }
+                    else{
+                      labels[A] = new JLabel(bs);
+                      spaceValue[A] = 0;
+                    }
+                          currentRectangle = new JPanel();
+                          currentSpace = boardSpaces[A];
+                          currentRectangle.add(labels[A]);
+                          gameBoardBackground.add(currentRectangle);
+
+                  }
+                  gameBoard.add(gameBoardBackground);
+                  frame.pack();
+                  boardInitialize=true;
+              }
+
+
+
+
+
+
+
+
+
+                // creates CheckerBoardSpace objects
+
+
+
+                // draws the Checkers board
+
+
                 /****************************************************************/
 
 
@@ -105,47 +128,13 @@ public class CheckerBoard extends JPanel
                 /******************************** Initial Piece Locations ********************************/
 
 
-                redPiecesLocations = new int[] {1, 3, 5, 7, 8, 10, 12, 14, 17, 19, 21, 23}; // original locations for pieces in top half of board
-                blackPiecesLocations = new int[] {40, 42, 44, 46, 49, 51, 53, 55, 56, 58, 60, 62}; // original locations for pieces in bottom half of board
-
-                int curX; // for game piece construction
-                int curY; // for game piece construction
-
-
-
-                // places pieces initial positions
-                for( int A = 0 ; A < 24 ; A++ )
-                {
-
-                        if(A < 12)
-                        {
-                                curX = ( redPiecesLocations[A] % 8 );
-                                curY = ( redPiecesLocations[A] / 8 );
-                                drawnPieces[A] = new GamePiece(Color.BLUE, redPiecesLocations[A], curX, curY);
-                        }
-                        else
-                        {
-                                curX = ( blackPiecesLocations[A-12] / 8 );
-                                curY = ( blackPiecesLocations[A-12] % 8 );
-                                drawnPieces[A] = new GamePiece(Color.GREEN, blackPiecesLocations[A-12], curX, curY);
-                        }
-
-
-                }
-
-
 
 
 
 
                 /******************************** Adding Pieces to Board ********************************/
 
-                GamePiece currentPiece;
-                for( int A = 0 ; A < 24 ; A++ )
-                {
-                        currentPiece = drawnPieces[A];
-                        gameBoardPieces.add(currentPiece, currentPiece.xBoardLocation, currentPiece.yBoardLocation); // adds the piece only to the appropriate place*/
-                }
+
 
                 //gameBoard.add(gameBoardPieces);
 
