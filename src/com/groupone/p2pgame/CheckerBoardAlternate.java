@@ -8,17 +8,20 @@ public class CheckerBoardAlternate extends JPanel
 {
 
         public JFrame frame;
-        public JLayeredPane lp;
+        public JLayeredPane gameBoard;
+        public Container gameBoardBackground;
+        public Container gameBoardWithPieces;
+
+
         public CheckerBoardSpace[] boardSpaces;
         public GamePiece[] drawnPieces;
 
-        public Container gameBoard;
-        public Container gameBoardBackground;
-        public Container gameBoardPieces;
 
+        public int[] playerOnePiecesLocations;
+        public int[] playerTwoPiecesLocations;
 
-        public int[] redPiecesLocations;
-        public int[] blackPiecesLocations;
+        public int playerOnePiecesLeft;
+        public int playerTwoPiecesLeft;
 
 
 
@@ -29,46 +32,43 @@ public class CheckerBoardAlternate extends JPanel
 
                 super();
 
+                /********************************  ********************************/
+
                 frame = new JFrame("CheckerBoardAlternate");
                 frame.setSize(645, 675);
                 frame.setTitle("Title");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-                lp = new JLayeredPane();
-                lp = frame.getLayeredPane();
-                lp.setPreferredSize(new Dimension(640, 640));
 
-                gameBoard = new Container();
-                gameBoard = frame.getContentPane();
+                gameBoard = new JLayeredPane();
+                gameBoard = frame.getLayeredPane();
+                gameBoard.setPreferredSize(new Dimension(640, 640));
 
 
-                gameBoardBackground = new Container();
-                gameBoardBackground.setSize(640, 640);
-                gameBoardBackground.setMaximumSize( new Dimension(640, 640) );
-                gameBoardBackground.setLayout( new GridLayout(8,8) );
+                gameBoardWithPieces = new Container();
+                gameBoardWithPieces.setSize(640, 640);
+                gameBoardWithPieces.setMaximumSize( new Dimension(640, 640) );
+                gameBoardWithPieces.setLayout( new GridLayout(8,8) );
 
 
-                gameBoardPieces = new Container();
-                gameBoardPieces.setSize(640, 640);
-                gameBoardPieces.setMaximumSize( new Dimension(640, 640) );
-                gameBoardPieces.setLayout( new GridLayout(8,8) );
-
-
-                /********************************  ********************************/
                 boardSpaces = new CheckerBoardSpace[64];
                 drawnPieces = new GamePiece[24];
 
+                playerOnePiecesLeft = 12;
+                playerTwoPiecesLeft = 12;
+                /********************************  ********************************/
 
 
 
 
 
 
-                /******************************** Initial Board Background ********************************/
+
+                /******************************** Initial Board Spaces ********************************/
 
                 int color = 0;
-                int x = 0;
-                int y = 0;
+                int x = 0; // row number
+                int y = 0; // column number
 
                 // creates CheckerBoardSpace objects
                 for(int A = 0 ; A < 64 ; A++)
@@ -76,61 +76,24 @@ public class CheckerBoardAlternate extends JPanel
 
                         boardSpaces[A] = new CheckerBoardSpace(color, A, x, y);
 
-                        if(y == 7)
+                        if(y == 7) // when in last column
                         {
-                                x++;
+                                x++; // increment row
                                 y = 0;
                                 color = (color % 2); // makes sure that the next row begins with an alternating color
                         }
                         else
                         {
                                 y++;
-                                color++;
+                                color++; // alternating the colors for the CheckerBoardSpace constructor
                         }
 
                 }
 
-                // draws the Checkers board
-                CheckerBoardSpace currentRectangle;
-                for(int A = 0 ; A < 64 ; A++)
-                {
-                        currentRectangle = boardSpaces[A];
-                        gameBoardBackground.add(currentRectangle);
-                }
-                //gameBoard.add(gameBoardBackground);
+
+                /****************************************************************/
 
 
-
-
-
-
-                redPiecesLocations = new int[] {1, 3, 5, 7, 8, 10, 12, 14, 17, 19, 21, 23}; // original locations for pieces in top half of board
-                blackPiecesLocations = new int[] {40, 42, 44, 46, 49, 51, 53, 55, 56, 58, 60, 62}; // original locations for pieces in bottom half of board
-
-                int curX; // for game piece construction
-                int curY; // for game piece construction
-
-
-
-
-                for( int A = 0 ; A < 24 ; A++ )
-                {
-
-                        if(A < 12)
-                        {
-                                curX = ( redPiecesLocations[A] % 8 );
-                                curY = ( redPiecesLocations[A] / 8 );
-                                drawnPieces[A] = new GamePiece(Color.BLUE,0,0,0);
-                        }
-                        else
-                        {
-                                curX = ( blackPiecesLocations[A-12] / 8 );
-                                curY = ( blackPiecesLocations[A-12] % 8 );
-                                drawnPieces[A] = new GamePiece(Color.GREEN, 0,0,0);
-                        }
-
-
-                }
 
 
 
@@ -139,59 +102,29 @@ public class CheckerBoardAlternate extends JPanel
 
                 /******************************** Adding Pieces to Board ********************************/
 
-                JPanel currentPiece;
-                boolean placeRed = true;
-                int curLocationIndex = 0;
-                for( int A = 0 ; A < 64 ; A++ )
+                playerOnePiecesLocations = new int[] {1, 3, 5, 7, 8, 10, 12, 14, 17, 19, 21, 23}; // original locations for pieces in top half of board
+                playerTwoPiecesLocations = new int[] {40, 42, 44, 46, 49, 51, 53, 55, 56, 58, 60, 62}; // original locations for pieces in bottom half of board
+
+
+
+                int curX; // row number
+                int curY; // column number
+
+                // creates the 24 game pieces --> player one's pieces are the first 12, and player two's pieces are second
+                for( int A = 0 ; A < 24 ; A++ )
                 {
 
-                        if( placeRed )
+                        if(A < 12)
                         {
-
-                                if( A == redPiecesLocations[curLocationIndex] )
-                                {
-                                        currentPiece = drawnPieces[curLocationIndex];
-                                        currentPiece.setBackground(boardSpaces[A].spaceColor);
-                                        gameBoardPieces.add(currentPiece); // adds the piece only to the appropriate place
-                                        curLocationIndex++;
-                                }
-                                else
-                                {
-                                        currentPiece = boardSpaces[A];
-                                        gameBoardPieces.add(boardSpaces[A]);
-                                }
-
-
-                                if (curLocationIndex == 12)
-                                {
-                                        placeRed = false; // all red pieces have been placed
-                                        curLocationIndex = 0; // restart for the black pieces
-                                }
-
-
+                                curX = ( playerOnePiecesLocations[A] / 8 );
+                                curY = ( playerOnePiecesLocations[A] % 8 );
+                                drawnPieces[A] = new GamePiece(Color.BLUE, playerOnePiecesLocations[A], curX, curY);
                         }
-
-
-                        else if( curLocationIndex < 12 ) // will only run for the black pieces
-                        {
-
-                                if( A == blackPiecesLocations[curLocationIndex] )
-                                {
-                                        currentPiece = drawnPieces[curLocationIndex+12];
-                                        currentPiece.setBackground(boardSpaces[A].spaceColor);
-                                        gameBoardPieces.add(currentPiece); // adds the piece only to the appropriate place
-                                        curLocationIndex++;
-                                }
-                                else
-                                {
-                                        gameBoardPieces.add(boardSpaces[A]);
-                                }
-
-                        }
-
                         else
                         {
-                                gameBoardPieces.add(boardSpaces[A]);
+                                curX = ( playerTwoPiecesLocations[A-12] / 8 );
+                                curY = ( playerTwoPiecesLocations[A-12] % 8 );
+                                drawnPieces[A] = new GamePiece(Color.GREEN, playerTwoPiecesLocations[A-12], curX, curY);
                         }
 
 
@@ -199,19 +132,72 @@ public class CheckerBoardAlternate extends JPanel
 
 
 
+                JPanel currentPiece;
+                JPanel emptySpace;
+
+                boolean placeFirst = true;
+                boolean placeSecond = true;
+
+                int curLocation = 0;
+                int curPieceIndexOne = 0; // for player one
+                int curPieceIndexTwo = 0; // for player two
 
 
+                while( curLocation < 64 ) // cycles through full board
+                {
+
+                        emptySpace = boardSpaces[curLocation];
+                        emptySpace.setBackground(boardSpaces[curLocation].spaceColor); // an empty space shaded according to the current position in the checkerboard
 
 
+                        if( placeFirst && curLocation == playerOnePiecesLocations[curPieceIndexOne] ) // if a one of player one's pieces should be placed here
+                        {
+                                        // selects one of player one's pieces for adding it to the game display
+                                currentPiece = drawnPieces[curPieceIndexOne];
+                                currentPiece.setBackground(boardSpaces[curLocation].spaceColor);
+                                gameBoardWithPieces.add(currentPiece);
+                                curPieceIndexOne++;
+
+                                if(curPieceIndexOne == playerOnePiecesLeft)
+                                {
+                                        placeFirst = false; // all of player one's pieces have been placed
+                                }
+                        }
+
+                        else if( placeSecond && curLocation == playerTwoPiecesLocations[curPieceIndexTwo] ) // if one of player two's pieces should be placed here
+                        {
+                                        // selects one of player two's pieces for adding it to the display
+                                currentPiece = drawnPieces[curPieceIndexTwo+12];
+                                currentPiece.setBackground(boardSpaces[curLocation].spaceColor);
+                                gameBoardWithPieces.add(currentPiece);
+                                curPieceIndexTwo++;
+
+                                if(curPieceIndexTwo == playerTwoPiecesLeft)
+                                {
+                                        placeSecond = false; // all of player two's pieces have been placed
+                                }
+                        }
 
 
+                        else
+                        {
+                                gameBoardWithPieces.add(emptySpace); // the current space is empty
+                        }
 
 
+                        curLocation++; // go to next square
 
 
-                //lp.add(gameBoardBackground, 0);
-                lp.add(gameBoardPieces, 1);
+                }
+
+
                 /****************************************************************/
+
+
+
+
+
+                gameBoard.add(gameBoardWithPieces, 0);
 
 
 
