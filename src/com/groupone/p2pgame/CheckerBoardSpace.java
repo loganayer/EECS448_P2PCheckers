@@ -23,7 +23,6 @@ public class CheckerBoardSpace extends JPanel
                 {
                         this.spaceColor = Color.BLACK;
                 }
-
                 this.spaceIndex = index;
                 this.xBoardLocation = x;
                 this.yBoardLocation = y;

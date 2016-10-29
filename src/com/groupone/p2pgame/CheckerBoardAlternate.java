@@ -1,3 +1,5 @@
+package com.groupone.p2pgame;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -138,20 +140,61 @@ public class CheckerBoardAlternate extends JPanel
                 /******************************** Adding Pieces to Board ********************************/
 
                 JPanel currentPiece;
+                boolean placeRed = true;
+                int curLocationIndex = 0;
                 for( int A = 0 ; A < 64 ; A++ )
                 {
-                        if(A < 24)
+
+                        if( placeRed )
                         {
-                                currentPiece = drawnPieces[A];
-                                currentPiece.setBackground(boardSpaces[A].spaceColor);
-                                gameBoardPieces.add(currentPiece); // adds the piece only to the appropriate place*/
+
+                                if( A == redPiecesLocations[curLocationIndex] )
+                                {
+                                        currentPiece = drawnPieces[curLocationIndex];
+                                        currentPiece.setBackground(boardSpaces[A].spaceColor);
+                                        gameBoardPieces.add(currentPiece); // adds the piece only to the appropriate place
+                                        curLocationIndex++;
+                                }
+                                else
+                                {
+                                        currentPiece = boardSpaces[A];
+                                        gameBoardPieces.add(boardSpaces[A]);
+                                }
+
+
+                                if (curLocationIndex == 12)
+                                {
+                                        placeRed = false; // all red pieces have been placed
+                                        curLocationIndex = 0; // restart for the black pieces
+                                }
+
+
                         }
+
+
+                        else if( curLocationIndex < 12 ) // will only run for the black pieces
+                        {
+
+                                if( A == blackPiecesLocations[curLocationIndex] )
+                                {
+                                        currentPiece = drawnPieces[curLocationIndex+12];
+                                        currentPiece.setBackground(boardSpaces[A].spaceColor);
+                                        gameBoardPieces.add(currentPiece); // adds the piece only to the appropriate place
+                                        curLocationIndex++;
+                                }
+                                else
+                                {
+                                        gameBoardPieces.add(boardSpaces[A]);
+                                }
+
+                        }
+
                         else
                         {
-                                CheckerBoardSpace currentRectangle2;
-                                currentRectangle2 = boardSpaces[A];
-                                gameBoardPieces.add(currentRectangle2);
+                                gameBoardPieces.add(boardSpaces[A]);
                         }
+
+
                 }
 
 
@@ -167,7 +210,7 @@ public class CheckerBoardAlternate extends JPanel
 
 
                 //lp.add(gameBoardBackground, 0);
-                lp.add(gameBoardPieces, 0);
+                lp.add(gameBoardPieces, 1);
                 /****************************************************************/
 
 
