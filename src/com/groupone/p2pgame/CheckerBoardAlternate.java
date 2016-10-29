@@ -32,7 +32,7 @@ public class CheckerBoardAlternate extends JPanel
 
                 super();
 
-                /********************************  ********************************/
+                /******************************** Display Characteristics ********************************/
 
                 frame = new JFrame("CheckerBoardAlternate");
                 frame.setSize(645, 675);
@@ -50,15 +50,21 @@ public class CheckerBoardAlternate extends JPanel
                 gameBoardWithPieces.setMaximumSize( new Dimension(640, 640) );
                 gameBoardWithPieces.setLayout( new GridLayout(8,8) );
 
+                /********************************  ********************************/
+
+
+
+
+
+                /******************************** Initializing Member Variables ********************************/
 
                 boardSpaces = new CheckerBoardSpace[64];
                 drawnPieces = new GamePiece[24];
 
                 playerOnePiecesLeft = 12;
                 playerTwoPiecesLeft = 12;
+
                 /********************************  ********************************/
-
-
 
 
 
@@ -90,10 +96,7 @@ public class CheckerBoardAlternate extends JPanel
 
                 }
 
-
                 /****************************************************************/
-
-
 
 
 
@@ -130,10 +133,30 @@ public class CheckerBoardAlternate extends JPanel
 
                 }
 
+                drawGameBoard();
+
+                /****************************************************************/
+
+
+
+
+
+                frame.setVisible(true);
+
+        }
+
+
+
+
+
+        // JavaDoc
+        public void drawGameBoard() // use for updating display of game board
+        {
 
 
                 JPanel currentPiece;
                 JPanel emptySpace;
+                JLabel currentPieceNumber;
 
                 boolean placeFirst = true;
                 boolean placeSecond = true;
@@ -167,7 +190,7 @@ public class CheckerBoardAlternate extends JPanel
                         else if( placeSecond && curLocation == playerTwoPiecesLocations[curPieceIndexTwo] ) // if one of player two's pieces should be placed here
                         {
                                         // selects one of player two's pieces for adding it to the display
-                                currentPiece = drawnPieces[curPieceIndexTwo+12];
+                                currentPiece = drawnPieces[curPieceIndexTwo+playerOnePiecesLeft]; // due to structure of drawnPieces array
                                 currentPiece.setBackground(boardSpaces[curLocation].spaceColor);
                                 gameBoardWithPieces.add(currentPiece);
                                 curPieceIndexTwo++;
@@ -191,21 +214,37 @@ public class CheckerBoardAlternate extends JPanel
                 }
 
 
-                /****************************************************************/
-
-
-
-
-
                 gameBoard.add(gameBoardWithPieces, 0);
 
-
-
-                frame.setVisible(true);
 
         }
 
 
+
+
+
+        public void removePiece(int whichPlayer, int pieceToRemove)     // pieceToRemove will deal with drawnPieces array
+        {
+
+                if(whichPlayer == 1)
+                {
+
+                        this.playerOnePiecesLeft--;
+
+
+                }
+
+
+
+                else
+                {
+
+                        this.playerTwoPiecesLeft--;
+
+                }
+
+
+        }
 
 
 
@@ -218,6 +257,8 @@ public class CheckerBoardAlternate extends JPanel
         {
 
                 CheckerBoardAlternate testBoard = new CheckerBoardAlternate();
+                //testBoard.removePiece(1, 3);
+                //testBoard.drawGameBoard();
 
         }
 
