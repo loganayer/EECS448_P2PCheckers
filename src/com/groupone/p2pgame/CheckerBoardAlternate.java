@@ -7,21 +7,23 @@ import java.awt.*;
 public class CheckerBoardAlternate extends JPanel
 {
 
-        private JFrame frame;
-        private JLayeredPane gameBoard;
-        private Container gameBoardBackground;
-        private Container gameBoardWithPieces;
+        public JFrame frame;
+        public JLayeredPane gameBoard;
+        public Container gameBoardBackground;
+        public Container gameBoardWithPieces;
 
 
-        private CheckerBoardSpace[] boardSpaces;
-        private GamePiece[] drawnPieces;
+        public CheckerBoardSpace[] boardSpaces;
+        public GamePiece[] drawnPieces;
 
 
-        private int[] playerOnePiecesLocations;
-        private int[] playerTwoPiecesLocations;
+        public int[] playerOnePiecesLocations;
+        public int[] playerTwoPiecesLocations;
+        public int[] currentLocations;
 
-        private int playerOnePiecesLeft;
-        private int playerTwoPiecesLeft;
+
+        public int playerOnePiecesLeft;
+        public int playerTwoPiecesLeft;
 
 
 
@@ -104,7 +106,8 @@ public class CheckerBoardAlternate extends JPanel
 
                 playerOnePiecesLocations = new int[] {1, 3, 5, 7, 8, 10, 12, 14, 17, 19, 21, 23}; // original locations for pieces in top half of board
                 playerTwoPiecesLocations = new int[] {40, 42, 44, 46, 49, 51, 53, 55, 56, 58, 60, 62}; // original locations for pieces in bottom half of board
-
+                currentLocations = new int[] {0,1,0,1,0,1,0,1,1,0,1,0,1,0,1,0,0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                  2,0,2,0,2,0,2,0,0,2,0,2,0,2,0,2,2,0,2,2,0,2}; //1==p1, 0==empty, 2== p2
 
 
                 int curX; // row number
@@ -124,7 +127,7 @@ public class CheckerBoardAlternate extends JPanel
                         {
                                 curX = ( playerTwoPiecesLocations[A-12] / 8 );
                                 curY = ( playerTwoPiecesLocations[A-12] % 8 );
-                                drawnPieces[A] = new GamePiece(Color.GREEN, playerTwoPiecesLocations[A-12], curX, curY);
+                                drawnPieces[A] = new GamePiece(Color.GRAY, playerTwoPiecesLocations[A-12], curX, curY);
                         }
 
 
@@ -134,7 +137,6 @@ public class CheckerBoardAlternate extends JPanel
                 this.drawGameBoard(); // draws the board at its initial state
 
                 /****************************************************************/
-
 
 
 
@@ -154,6 +156,7 @@ public class CheckerBoardAlternate extends JPanel
                 this.frame.dispose();
                 this.frame = new JFrame();
                 this.frame.setSize(645, 675);
+                this.frame.setResizable(false);
                 this.frame.setTitle("CheckerBoardAlternate");
                 this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -167,6 +170,8 @@ public class CheckerBoardAlternate extends JPanel
                 this.gameBoardWithPieces.setSize(640, 640);
                 this.gameBoardWithPieces.setMaximumSize( new Dimension(640, 640) );
                 this.gameBoardWithPieces.setLayout( new GridLayout(8,8) );
+                this.gameBoardWithPieces.setBackground(Color.BLACK);
+
 
         }
 
@@ -206,7 +211,7 @@ public class CheckerBoardAlternate extends JPanel
                         {
                                         // selects one of player one's pieces for adding it to the game display
                                 currentPiece = drawnPieces[curPieceIndexOne];
-                                currentPiece.setBackground(currentBoardSpace.getSpaceColor());
+                                currentPiece.setBackground(currentBoardSpace.spaceColor);
                                 gameBoardWithPieces.add(currentPiece);
                                 curPieceIndexOne++;
 
@@ -220,7 +225,7 @@ public class CheckerBoardAlternate extends JPanel
                         {
                                         // selects one of player two's pieces for adding it to the display
                                 currentPiece = drawnPieces[curPieceIndexTwo+playerOnePiecesLeft]; // index is calculated this way due to structure of drawnPieces array
-                                currentPiece.setBackground(currentBoardSpace.getSpaceColor());
+                                currentPiece.setBackground(currentBoardSpace.spaceColor);
                                 gameBoardWithPieces.add(currentPiece);
                                 curPieceIndexTwo++;
 
@@ -235,18 +240,11 @@ public class CheckerBoardAlternate extends JPanel
                         {
                                 gameBoardWithPieces.add(currentBoardSpace); // the current space is empty
                         }
-
-
                         curLocation++; // go to next square
-
-
                 }
-
 
                 gameBoard.add(gameBoardWithPieces, 0);
                 this.frame.setVisible(true);
-
-
         }
 
 
@@ -255,7 +253,6 @@ public class CheckerBoardAlternate extends JPanel
 
         public void removePiece(int whichPlayer, int locationToRemoveFrom)     // locationToRemoveFrom = 0 to 63
         {
-
                         // array of game pieces and  that should remain after the removal
                 int B = 0;
 
@@ -268,7 +265,7 @@ public class CheckerBoardAlternate extends JPanel
                         B = 0;
                         for(int A = 0 ; A < this.playerOnePiecesLocations.length ; A++)
                         {
-                                if( this.drawnPieces[A].getGameBoardIndex() != locationToRemoveFrom )
+                                if( this.drawnPieces[A].gameBoardIndex != locationToRemoveFrom )
                                 {
                                         tempOneLocations[B] = this.playerOnePiecesLocations[A];
                                         B++;
@@ -279,18 +276,15 @@ public class CheckerBoardAlternate extends JPanel
 
                 }
 
-
-
                 else
                 {
-
                         int[] tempTwoLocations = new int[ this.playerTwoPiecesLocations.length - 1 ];
                         this.playerTwoPiecesLeft--;
 
                         B = 0;
                         for(int A = 0 ; A < this.playerTwoPiecesLocations.length ; A++)
                         {
-                                if( this.drawnPieces[ A + this.playerOnePiecesLeft ].getGameBoardIndex() != locationToRemoveFrom )
+                                if( this.drawnPieces[ A + this.playerOnePiecesLeft ].gameBoardIndex != locationToRemoveFrom )
                                 {
                                         tempTwoLocations[B] = this.playerTwoPiecesLocations[A];
                                         B++;
@@ -298,17 +292,14 @@ public class CheckerBoardAlternate extends JPanel
                         }
                         this.playerTwoPiecesLocations = new int [ tempTwoLocations.length - 1 ];
                         this.playerTwoPiecesLocations = tempTwoLocations;
-
                 }
-
-
 
                 GamePiece[] tempPieces = new GamePiece[ this.drawnPieces.length - 1 ];
                 B = 0;
 
                 for( int A = 0 ; A < this.drawnPieces.length ; A++ )
                 {
-                        if( this.drawnPieces[A].getGameBoardIndex() != locationToRemoveFrom )
+                        if( this.drawnPieces[A].gameBoardIndex != locationToRemoveFrom )
                         {
                                 tempPieces[B] = this.drawnPieces[A];
                                 B++;
@@ -317,24 +308,12 @@ public class CheckerBoardAlternate extends JPanel
                 this.drawnPieces = new GamePiece[ tempPieces.length ];
                 this.drawnPieces = tempPieces;
 
-
-
-
-
         }
-
-
-
-
-
-
 
 
         public static void main(String[] args)
         {
-
                 CheckerBoardAlternate testBoard = new CheckerBoardAlternate();
-
                 /*
                 testBoard.removePiece(1, 3);
                 testBoard.removePiece(1, 5);
@@ -343,7 +322,5 @@ public class CheckerBoardAlternate extends JPanel
 
                 testBoard.drawGameBoard();
                 */
-
         }
-
 }
