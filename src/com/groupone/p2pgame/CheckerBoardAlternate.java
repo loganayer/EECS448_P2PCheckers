@@ -34,9 +34,9 @@ public class CheckerBoardAlternate extends JPanel
 
                 /******************************** Display Characteristics ********************************/
 
-                frame = new JFrame("CheckerBoardAlternate");
+                frame = new JFrame();
                 frame.setSize(645, 675);
-                frame.setTitle("Title");
+                frame.setTitle("CheckerBoardAlternate");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
@@ -56,15 +56,22 @@ public class CheckerBoardAlternate extends JPanel
 
 
 
+
+
+
                 /******************************** Initializing Member Variables ********************************/
 
                 boardSpaces = new CheckerBoardSpace[64];
-                drawnPieces = new GamePiece[24];
+                drawnPieces = new GamePiece[24]; // all of player one's pieces will be placed in this array before player two's pieces
 
+                        // for beginning of game
                 playerOnePiecesLeft = 12;
                 playerTwoPiecesLeft = 12;
 
                 /********************************  ********************************/
+
+
+
 
 
 
@@ -103,6 +110,9 @@ public class CheckerBoardAlternate extends JPanel
 
 
 
+
+
+
                 /******************************** Adding Pieces to Board ********************************/
 
                 playerOnePiecesLocations = new int[] {1, 3, 5, 7, 8, 10, 12, 14, 17, 19, 21, 23}; // original locations for pieces in top half of board
@@ -133,7 +143,7 @@ public class CheckerBoardAlternate extends JPanel
 
                 }
 
-                drawGameBoard();
+                //drawGameBoard(); // initial drawing of board
 
                 /****************************************************************/
 
@@ -149,13 +159,18 @@ public class CheckerBoardAlternate extends JPanel
 
 
 
+
         // JavaDoc
         public void drawGameBoard() // use for updating display of game board
         {
 
 
+                gameBoard = new JLayeredPane();
+                gameBoard = frame.getLayeredPane();
+                gameBoard.setPreferredSize(new Dimension(640, 640));
+
                 JPanel currentPiece;
-                JPanel emptySpace;
+                CheckerBoardSpace currentBoardSpace;
                 JLabel currentPieceNumber;
 
                 boolean placeFirst = true;
@@ -169,15 +184,14 @@ public class CheckerBoardAlternate extends JPanel
                 while( curLocation < 64 ) // cycles through full board
                 {
 
-                        emptySpace = boardSpaces[curLocation];
-                        emptySpace.setBackground(boardSpaces[curLocation].spaceColor); // an empty space shaded according to the current position in the checkerboard
+                        currentBoardSpace = boardSpaces[curLocation];
 
 
                         if( placeFirst && curLocation == playerOnePiecesLocations[curPieceIndexOne] ) // if a one of player one's pieces should be placed here
                         {
                                         // selects one of player one's pieces for adding it to the game display
                                 currentPiece = drawnPieces[curPieceIndexOne];
-                                currentPiece.setBackground(boardSpaces[curLocation].spaceColor);
+                                currentPiece.setBackground(currentBoardSpace.spaceColor);
                                 gameBoardWithPieces.add(currentPiece);
                                 curPieceIndexOne++;
 
@@ -190,8 +204,8 @@ public class CheckerBoardAlternate extends JPanel
                         else if( placeSecond && curLocation == playerTwoPiecesLocations[curPieceIndexTwo] ) // if one of player two's pieces should be placed here
                         {
                                         // selects one of player two's pieces for adding it to the display
-                                currentPiece = drawnPieces[curPieceIndexTwo+playerOnePiecesLeft]; // due to structure of drawnPieces array
-                                currentPiece.setBackground(boardSpaces[curLocation].spaceColor);
+                                currentPiece = drawnPieces[curPieceIndexTwo+playerOnePiecesLeft]; // index is calculated this way due to structure of drawnPieces array
+                                currentPiece.setBackground(currentBoardSpace.spaceColor);
                                 gameBoardWithPieces.add(currentPiece);
                                 curPieceIndexTwo++;
 
@@ -204,7 +218,7 @@ public class CheckerBoardAlternate extends JPanel
 
                         else
                         {
-                                gameBoardWithPieces.add(emptySpace); // the current space is empty
+                                gameBoardWithPieces.add(currentBoardSpace); // the current space is empty
                         }
 
 
@@ -223,14 +237,29 @@ public class CheckerBoardAlternate extends JPanel
 
 
 
-        public void removePiece(int whichPlayer, int pieceToRemove)     // pieceToRemove will deal with drawnPieces array
+        public void removePiece(int whichPlayer, int locationToRemoveFrom)     // locationToRemoveFrom will deal with drawnPieces array
         {
+
+                        // array of game pieces and  that should remain after the removal
+                int B = 0;
 
                 if(whichPlayer == 1)
                 {
 
+                        int[] tempOneLocations = new int[ this.playerOnePiecesLocations.length - 1 ];
                         this.playerOnePiecesLeft--;
 
+                        B = 0;
+                        for(int A = 0 ; A < this.playerOnePiecesLocations.length ; A++)
+                        {
+                                if( this.drawnPieces[A].gameBoardIndex != locationToRemoveFrom )
+                                {
+                                        tempOneLocations[B] = this.playerOnePiecesLocations[A];
+                                        B++;
+                                }
+                        }
+                        this.playerOnePiecesLocations = new int [ tempOneLocations.length - 1 ];
+                        this.playerOnePiecesLocations = tempOneLocations;
 
                 }
 
@@ -239,9 +268,41 @@ public class CheckerBoardAlternate extends JPanel
                 else
                 {
 
+                        int[] tempTwoLocations = new int[ this.playerTwoPiecesLocations.length - 1 ];
                         this.playerTwoPiecesLeft--;
 
+                        B = 0;
+                        for(int A = 0 ; A < this.playerTwoPiecesLocations.length ; A++)
+                        {
+                                if( this.drawnPieces[ A + this.playerOnePiecesLeft ].gameBoardIndex != locationToRemoveFrom )
+                                {
+                                        tempTwoLocations[B] = this.playerTwoPiecesLocations[A];
+                                        B++;
+                                }
+                        }
+                        this.playerTwoPiecesLocations = new int [ tempTwoLocations.length - 1 ];
+                        this.playerTwoPiecesLocations = tempTwoLocations;
+
                 }
+
+
+
+                GamePiece[] tempPieces = new GamePiece[ this.drawnPieces.length - 1 ];
+                B = 0;
+
+                for( int A = 0 ; A < this.drawnPieces.length ; A++ )
+                {
+                        if( this.drawnPieces[A].gameBoardIndex != locationToRemoveFrom )
+                        {
+                                tempPieces[B] = this.drawnPieces[A];
+                                B++;
+                        }
+                }
+                this.drawnPieces = new GamePiece[ tempPieces.length ];
+                this.drawnPieces = tempPieces;
+
+
+
 
 
         }
@@ -257,8 +318,11 @@ public class CheckerBoardAlternate extends JPanel
         {
 
                 CheckerBoardAlternate testBoard = new CheckerBoardAlternate();
-                //testBoard.removePiece(1, 3);
-                //testBoard.drawGameBoard();
+                testBoard.removePiece(1, 3);
+                testBoard.removePiece(1, 5);
+                testBoard.removePiece(2, 60);
+                testBoard.removePiece(2, 44);
+                testBoard.drawGameBoard();
 
         }
 
