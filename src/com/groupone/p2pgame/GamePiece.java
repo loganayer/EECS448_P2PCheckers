@@ -10,10 +10,10 @@ public class GamePiece extends JPanel
 {
 
 
-        public Color pieceColor;
-        public int gameBoardIndex;
-        public int xBoardLocation; // column ; multiple of 100
-        public int yBoardLocation; // row ; multiple of 100
+        private Color pieceColor;
+        private int gameBoardIndex;
+        private int xBoardLocation; // column ; multiple of 100
+        private int yBoardLocation; // row ; multiple of 100
 
 
         public GamePiece(Color color, int boardIndex, int xLocation, int yLocation)
@@ -34,4 +34,8 @@ public class GamePiece extends JPanel
                 graphics.fillOval(10, 10, 60, 60);
         }
 
+	public int getGameBoardIndex()
+	{
+		return this.gameBoardIndex;
+	}
 }

@@ -6,11 +6,11 @@ import java.awt.*;
 
 public class CheckerBoardSpace extends JPanel
 {
-        public Color spaceColor; // red or black
-        public int spaceIndex; // number 0-63, with left to right from top to bottom
+        private Color spaceColor; // red or black
+        private int spaceIndex; // number 0-63, with left to right from top to bottom
 
-        public int xBoardLocation;
-        public int yBoardLocation;
+        private int xBoardLocation;
+        private int yBoardLocation;
 
         public CheckerBoardSpace(int color, int index, int x, int y)
         {
@@ -37,5 +37,8 @@ public class CheckerBoardSpace extends JPanel
                 graphics.fillRect(0, 0, 80, 80);
         }
 
-
+	public Color getSpaceColor()
+	{
+		return this.spaceColor;
+	}
 }
