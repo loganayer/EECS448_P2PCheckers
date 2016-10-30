@@ -34,21 +34,8 @@ public class CheckerBoardAlternate extends JPanel
 
                 /******************************** Display Characteristics ********************************/
 
-                frame = new JFrame();
-                frame.setSize(645, 675);
-                frame.setTitle("CheckerBoardAlternate");
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
-                gameBoard = new JLayeredPane();
-                gameBoard = frame.getLayeredPane();
-                gameBoard.setPreferredSize(new Dimension(640, 640));
-
-
-                gameBoardWithPieces = new Container();
-                gameBoardWithPieces.setSize(640, 640);
-                gameBoardWithPieces.setMaximumSize( new Dimension(640, 640) );
-                gameBoardWithPieces.setLayout( new GridLayout(8,8) );
+                this.frame = new JFrame(); // for the first initializeSettings call
+                this.initializeSettings();
 
                 /********************************  ********************************/
 
@@ -143,7 +130,8 @@ public class CheckerBoardAlternate extends JPanel
 
                 }
 
-                //drawGameBoard(); // initial drawing of board
+
+                this.drawGameBoard(); // draws the board at its initial state
 
                 /****************************************************************/
 
@@ -160,14 +148,41 @@ public class CheckerBoardAlternate extends JPanel
 
 
 
+        public void initializeSettings()
+        {
+
+                this.frame.dispose();
+                this.frame = new JFrame();
+                this.frame.setSize(645, 675);
+                this.frame.setTitle("CheckerBoardAlternate");
+                this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
+                this.gameBoard = new JLayeredPane();
+                this.gameBoard = frame.getLayeredPane();
+                this.gameBoard.setPreferredSize(new Dimension(640, 640));
+
+
+                this.gameBoardWithPieces = new Container();
+                this.gameBoardWithPieces.setSize(640, 640);
+                this.gameBoardWithPieces.setMaximumSize( new Dimension(640, 640) );
+                this.gameBoardWithPieces.setLayout( new GridLayout(8,8) );
+
+        }
+
+
+
+
+
+
+
+
         // JavaDoc
         public void drawGameBoard() // use for updating display of game board
         {
 
 
-                gameBoard = new JLayeredPane();
-                gameBoard = frame.getLayeredPane();
-                gameBoard.setPreferredSize(new Dimension(640, 640));
+                this.initializeSettings();
 
                 JPanel currentPiece;
                 CheckerBoardSpace currentBoardSpace;
@@ -229,6 +244,7 @@ public class CheckerBoardAlternate extends JPanel
 
 
                 gameBoard.add(gameBoardWithPieces, 0);
+                this.frame.setVisible(true);
 
 
         }
@@ -237,7 +253,7 @@ public class CheckerBoardAlternate extends JPanel
 
 
 
-        public void removePiece(int whichPlayer, int locationToRemoveFrom)     // locationToRemoveFrom will deal with drawnPieces array
+        public void removePiece(int whichPlayer, int locationToRemoveFrom)     // locationToRemoveFrom = 0 to 63
         {
 
                         // array of game pieces and  that should remain after the removal
@@ -318,11 +334,15 @@ public class CheckerBoardAlternate extends JPanel
         {
 
                 CheckerBoardAlternate testBoard = new CheckerBoardAlternate();
+
+                /*
                 testBoard.removePiece(1, 3);
                 testBoard.removePiece(1, 5);
                 testBoard.removePiece(2, 60);
                 testBoard.removePiece(2, 44);
+
                 testBoard.drawGameBoard();
+                */
 
         }
 
