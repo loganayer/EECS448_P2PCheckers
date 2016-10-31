@@ -2,9 +2,11 @@ package com.groupone.p2pgame;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
-
-public class CheckerBoardAlternate extends JPanel
+public class CheckerBoardAlternate extends JPanel implements MouseListener
 {
 
         public JFrame frame;
@@ -18,7 +20,7 @@ public class CheckerBoardAlternate extends JPanel
 
 
         public int[] playerOnePiecesLocations;
-        public int[] playerTwoPiecesLocations;
+        public static int[] playerTwoPiecesLocations; //ex playerTwoPiecesLocations[3]==42 third piece and 42/63 on the board
         public int[] currentLocations;
 
 
@@ -136,6 +138,7 @@ public class CheckerBoardAlternate extends JPanel
 
                 this.drawGameBoard(); // draws the board at its initial state
 
+
                 /****************************************************************/
 
 
@@ -148,8 +151,18 @@ public class CheckerBoardAlternate extends JPanel
 
 
 
-
-
+        //MOUSE locations THIS DOESNT DO ANYTHING THE REAL CODE IS FAR BELOW
+        public void mousePressed(MouseEvent e) {
+        }
+        public void mouseReleased(MouseEvent e) {
+        }
+        public void mouseEntered(MouseEvent e) {
+        }
+        public void mouseExited(MouseEvent e) {
+        }
+        public void mouseClicked(MouseEvent e) {
+        }
+        
         public void initializeSettings()
         {
 
@@ -190,6 +203,7 @@ public class CheckerBoardAlternate extends JPanel
                 this.initializeSettings();
 
                 JPanel currentPiece;
+
                 CheckerBoardSpace currentBoardSpace;
                 JLabel currentPieceNumber;
 
@@ -244,6 +258,11 @@ public class CheckerBoardAlternate extends JPanel
                 }
 
                 gameBoard.add(gameBoardWithPieces, 0);
+                gameBoardWithPieces.addMouseListener(new MouseAdapter() {
+     public void mousePressed(MouseEvent e) {
+                 System.out.println("3A");
+                  }
+                });
                 this.frame.setVisible(true);
         }
 
@@ -281,6 +300,7 @@ public class CheckerBoardAlternate extends JPanel
                         int[] tempTwoLocations = new int[ this.playerTwoPiecesLocations.length - 1 ];
                         this.playerTwoPiecesLeft--;
 
+
                         B = 0;
                         for(int A = 0 ; A < this.playerTwoPiecesLocations.length ; A++)
                         {
@@ -309,6 +329,10 @@ public class CheckerBoardAlternate extends JPanel
                 this.drawnPieces = tempPieces;
 
         }
+
+
+
+
 
 
         public static void main(String[] args)

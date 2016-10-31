@@ -18,7 +18,7 @@ public class GamePiece extends JPanel implements MouseListener
         public boolean ispressed = false;
         public boolean isSelected = false;
         public int[] currentLocations = new int[] {0,1,0,1,0,1,0,1,1,0,1,0,1,0,1,0,0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-          2,0,2,0,2,0,2,0,0,2,0,2,0,2,0,2,2,0,2,2,0,2}; //1==p1, 0==empty, 2== p2
+          2,0,2,0,2,0,2,0,0,2,0,2,0,2,0,2,2,0,2,0,2,0,2,0}; //1==p1, 0==empty, 2== p2
 
         public GamePiece(Color color, int boardIndex, int xLocation, int yLocation)
         {
@@ -54,11 +54,11 @@ public class GamePiece extends JPanel implements MouseListener
         }
 
 public void mousePressed(MouseEvent e) {
-  if(currentLocations[this.xBoardLocation*8 + this.yBoardLocation]==2)
+  if(currentLocations[this.xBoardLocation*8 + this.yBoardLocation]==2 && currentLocations[(this.xBoardLocation-1)*8 + this.yBoardLocation-1]==0)
   {
     ispressed=true;
     isSelected=true;
-    System.out.println("testPress");
+    System.out.println("1");
     repaint();
   }
 
@@ -71,11 +71,15 @@ public void mouseReleased(MouseEvent e) {
     this.xBoardLocation=this.xBoardLocation-1;
     this.yBoardLocation=this.yBoardLocation-1;
     currentLocations[this.xBoardLocation*8 + this.yBoardLocation]=2;
+    for(int i=0; i<11; i++)
+    {
+        
+    }
     repaint();
-    System.out.println("testMoved");
+    System.out.println("3");
 
   }
-  System.out.println("testReleased");
+  System.out.println("4");
 
 }
 
@@ -93,10 +97,8 @@ public void mouseClicked(MouseEvent e) {
   if(isSelected)
   {
     ispressed=false;
-    System.out.println("testClicked");
-    repaint();
+    System.out.println("2");
                     //testBoard.removePiece(1, 3);
-
   }
 
 }
