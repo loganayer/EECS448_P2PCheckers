@@ -7,24 +7,22 @@ import java.awt.*;
 public class CheckerBoardAlternate extends JPanel
 {
 
-        public JFrame frame;
-        public JLayeredPane gameBoard;
-        public Container gameBoardBackground;
-        public Container gameBoardWithPieces;
+        private JFrame frame;
+        private JLayeredPane gameBoard;
+        private Container gameBoardBackground;
+        private Container gameBoardWithPieces;
 
 
-        public CheckerBoardSpace[] boardSpaces;
-        public GamePiece[] drawnPieces;
+        private CheckerBoardSpace[] boardSpaces;
+        private GamePiece[] drawnPieces;
 
 
-        public int[] playerOnePiecesLocations;
-        public int[] playerTwoPiecesLocations;
-        public int[] currentLocations;
+        private int[] playerOnePiecesLocations;
+        private int[] playerTwoPiecesLocations;
 
 
-        public int playerOnePiecesLeft;
-        public int playerTwoPiecesLeft;
-
+        private int playerOnePiecesLeft;
+        private int playerTwoPiecesLeft;
 
 
 
