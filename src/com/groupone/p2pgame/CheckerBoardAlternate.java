@@ -460,6 +460,13 @@ public class CheckerBoardAlternate extends JPanel implements MouseListener
 				}
 			}
 
+                        // unhighlight everything
+                        for (CheckerBoardSpace space : this.boardSpaces) {
+                                if (space != null) { // make sure it isn't null
+                                        space.dehighlight(); // un highlight it
+                                }
+                        }
+
                         // highlight each of the extra jumps
 			for (CheckerMove move2 : extraJumps) {
 				this.boardSpaces[move2.getEnd().getIndex()].highlight();
