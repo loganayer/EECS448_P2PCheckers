@@ -33,6 +33,10 @@ public class CheckerBoardState {
         return this.squares;
     }
 
+    public CheckerSquare getSquare(int index) {
+        return this.squares[index];
+    }
+
     public void addPieceAtIndex(Piece piece, int index) {
         this.squares[index].setPiece(piece);
     }
@@ -63,5 +67,86 @@ public class CheckerBoardState {
 
     public int[] getPlayerTwoPieceLocationsInts() {
         return this.getPieceLocationsInts(new Piece(PieceType.PAWN, Player.TWO));
+    }
+
+    /**
+       Is the move a valid move for this board?
+     */
+    public boolean isValidMove(CheckerMove move) {
+        // Board newBoard = (Board) board.clone();
+
+        if (move.getStart().getIndex() < 0 || move.getStart().getIndex() >= 64
+            || move.getEnd().getIndex() < 0 || move.getEnd().getIndex() >= 64) {
+            return false;
+        }
+
+        // Make sure the end spot is empty
+        if (move.getEnd().getPiece().getType() != PieceType.EMPTY) {
+            return false;
+        }
+
+        int dx = move.getEnd().getX() - move.getStart().getX();
+        int dy = move.getEnd().getY() - move.getStart().getY();
+
+        // check directions
+        if (dy >= 1 && move.getStart().getPiece().getPlayer() == Player.TWO) { // player two moves up
+            // okay
+        } else if (dy <= -1 && move.getStart().getPiece().getPlayer() == Player.ONE) { // player one moves up
+            // okay
+        } else if (move.getStart().getPiece().getType() == PieceType.KING) {
+            // okay
+        } else {
+            return false;
+        }
+
+        // check diagonal
+        if (move.isSingleJump()) { // single jump
+            // okay
+        } else if (move.isDoubleJump()) { // double jump
+            // okay
+        } else {
+            return false;
+        }
+
+        return true;
+    }
+
+    public List<CheckerMove> getValidMoves(CheckerSquare square1) {
+        List<CheckerMove> moves = new ArrayList<CheckerMove>();
+        for (CheckerSquare square2 : getSquares()) {
+            CheckerMove move = new CheckerMove(square1, square2);
+            if (isValidMove(move)) {
+                moves.add(move);
+            }
+        }
+        return moves;
+    }
+
+    public List<CheckerMove> getValidDoubleJumps(CheckerSquare square1) {
+        List<CheckerMove> moves = new ArrayList<CheckerMove>();
+        for (CheckerSquare square2 : getSquares()) {
+            CheckerMove move = new CheckerMove(square1, square2);
+            if (isValidMove(move) && move.isDoubleJump()) {
+                moves.add(move);
+            }
+        }
+        return moves;
+    }
+
+    public void executeMove(CheckerMove move) {
+        // move piece up to target
+        this.squares[move.getEnd().getIndex()].setPiece(move.getStart().getPiece());
+
+        // set square to empty piece
+        this.squares[move.getStart().getIndex()].setPiece(new Piece());
+
+        // king me
+        if (move.getStart().getPiece().getPlayer() == Player.ONE &&
+            move.getEnd().getY() == 0) {
+            move.getStart().getPiece().king();
+        } else if (move.getStart().getPiece().getPlayer() == Player.TWO &&
+                   move.getEnd().getY() == 7) {
+            move.getStart().getPiece().king();
+        }
     }
 }

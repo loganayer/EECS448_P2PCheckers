@@ -17,6 +17,10 @@ public class Piece {
 	return this.type;
     }
 
+    public void king() {
+	this.type = PieceType.KING;
+    }
+
     public Player getPlayer() {
 	return this.player;
     }
