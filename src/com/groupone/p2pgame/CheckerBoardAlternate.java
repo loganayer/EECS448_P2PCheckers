@@ -8,30 +8,40 @@ import java.awt.event.*;
 import java.util.List;
 
 /**
+   <p>
    CheckerBoardAlternate is the main entry point into the checkers
    board. It creates the grid that is filled with all 64 spaces and
    the 24 pieces.
+   </p>
 
+   <p>
    The checkers board consists of 32 black spaces and 32 red spaces.
    Only the 32 black spaces will have pieces on them.
+   </p>
 
+   <p>
    This keeps track of the "active player", that is who's turn it is
    to move. It stops the other pieces from moving when they are not
    one of the active player's pieces. As of now, there is no obvious
    way to know who's turn it is without trial and error.
+   </p>
 
+   <p>
    Each time an active piece is clicked, the possible moves are
    highilighted. Clicking on one of the highlighted spaces causes the
    player's turn to end, and for the next player's turn to begin,
    unless there is another "double jump" that can be made. In those
    cases, the checker board enters "extra jump mode".
+   </p>
 
+   <p>
    In extra jump mode, all other movement is frozen except for the
    highlighted extraa jump. In this version of checkers, you cannot
    skip the extra jump. The game will proceed only after you have
    chosen to take extra jumps until you can do so no more. This
    mechanism is to prevent the user from sneaking in another unrelated
    move and passing it off as an "extra jump".
+   </p>
 */
 public class CheckerBoardAlternate extends JPanel implements MouseListener
 {

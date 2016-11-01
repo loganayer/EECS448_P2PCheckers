@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
+   <p>
    Checker board state holds all of the data about the checker board
    displayed in CheckerBoardAlternate. The The checker board is held
    in an array of 64 spaces. The the top left space is the first space
@@ -12,45 +13,70 @@ import java.util.ArrayList;
    right on the first row is followed by the 1st space on the left for
    the second row. The wrapped order of these spaces is called the
    "index" and is 0-indexed. It looks like this:
+   </p>
 
+   <pre>
      0 | 1 | 2 | 3 | 4 | 5 | 6 | 7
      8 | 9 | ...
+   </pre>
 
+   <p>
    Some other useful terms:
+   </p>
 
+   <p>
    A "pawn" is one of the 24 starting pieces. Pawns can only go
    towards the other end of the board.
+   </p>
 
+     <p>
      for player two:
+     </p>
 
+     <pre>
      X | X | X    X | X | P2  P2| X | X
      X | P2| X -> X | X | X | X | X | X
      X | X | X    X | X | X   X | X | X
+     </pre>
 
+     <p>
      or for player one:
+     </p>
 
+     <pre>
      X | X | X    X | X | X   X | X | X
      X | P1| X -> X | X | X | X | X | X
      X | X | X    P1| X | X   X | X | P1
+     </pre>
 
+   <p>
    A "king" is obtained once a pawn has reached the other side of the
    board. Kings can go any direction.
+   </p>
 
+     <pre>
      X | X | X    K | X | X   X | X | K   X | X | X   X | X | X
      X | K | X -> X | X | X | X | X | X | X | X | X | X | X | X
      X | X | X    X | X | X   X | X | X   K | X | X   X | X | K
+     </pre>
 
+   <p>
    A "single jump" in this context is a move diagonally obeying the
    usual rules of checkers. Each of the examples above is a single
    jump.
+   </p>
 
+   <p>
    A "double jump" is where the user moves twice diagonally in one
    direction while also passing a piece of the other player. This
    results in the other player's piece being removed from the game.
+   </p>
 
+     <pre>
      X | X | X    X | X | P2
      X | P1| X -> X | X | X
      P2| X | X    X | X | X
+     </pre>
 
 */
 public class CheckerBoardState {
