@@ -41,8 +41,7 @@ public class GamePiece extends JPanel implements MouseListener
         }
 
         public void select() {
-                if (this.board.getActivePlayer() == this.player &&
-                    !this.board.isInExtraJumpMode()) {
+                if (this.board.getActivePlayer() == this.player) {
                         isPressed=true;
                         repaint();
                         this.board.setSelected(gameBoardIndex);
@@ -55,8 +54,10 @@ public class GamePiece extends JPanel implements MouseListener
         } 
         
         public void mousePressed(MouseEvent e) {
-                this.board.clearHighlights();
-                select();
+                if (!this.board.isInExtraJumpMode()) {
+                        this.board.clearHighlights();
+                        select();
+                }
         }
 
         public void mouseReleased(MouseEvent e) {
