@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.*;
+import java.util.List;
 
 public class CheckerBoardAlternate extends JPanel implements MouseListener
 {
@@ -18,11 +19,18 @@ public class CheckerBoardAlternate extends JPanel implements MouseListener
         private CheckerBoardSpace[] boardSpaces;
         private GamePiece[] drawnPieces;
 
+        private CheckerBoardState state;
+
+        private CheckerSquare selectedSquare;
+
+        private Player activePlayer;
+        private boolean extraJumpMode;
+
         /**
            Start a new game board.
         */
         public CheckerBoardAlternate() {
-		this(CheckerBoardState.getStartingBoard());
+                this(CheckerBoardState.getStartingBoard());
         }
 
         /**
@@ -32,6 +40,15 @@ public class CheckerBoardAlternate extends JPanel implements MouseListener
         {
 
                 super();
+
+		this.state = state;
+
+		// player two goes first
+		this.activePlayer = Player.TWO;
+
+		// set to true when you want to disable everything but
+		// the second jump.
+		this.extraJumpMode = false;
 
                 /******************************** Display Characteristics ********************************/
 
@@ -61,32 +78,6 @@ public class CheckerBoardAlternate extends JPanel implements MouseListener
 
 
 
-                /******************************** Initial Board Spaces ********************************/
-
-                int color = 0;
-                int x = 0; // row number
-                int y = 0; // column number
-
-                // creates CheckerBoardSpace objects
-                for(int A = 0 ; A < 64 ; A++)
-                {
-
-                        boardSpaces[A] = new CheckerBoardSpace(color, A, x, y);
-
-                        if(y == 7) // when in last column
-                        {
-                                x++; // increment row
-                                y = 0;
-                                color = (color % 2); // makes sure that the next row begins with an alternating color
-                        }
-                        else
-                        {
-                                y++;
-                                color++; // alternating the colors for the CheckerBoardSpace constructor
-                        }
-
-                }
-
                 /****************************************************************/
 
 
@@ -96,7 +87,7 @@ public class CheckerBoardAlternate extends JPanel implements MouseListener
 
 
 
-
+                this.drawGameBackground();
                 this.drawGameBoard(state); // draws the board at its initial state
 
 
@@ -154,6 +145,35 @@ public class CheckerBoardAlternate extends JPanel implements MouseListener
 
 
 
+	public void drawGameBackground() {
+
+                /******************************** Initial Board Spaces ********************************/
+
+                int color = 0;
+                int x = 0; // row number
+                int y = 0; // column number
+
+                // creates CheckerBoardSpace objects
+                for(int A = 0 ; A < 64 ; A++)
+                {
+
+                        boardSpaces[A] = new CheckerBoardSpace(this, color, A, x, y);
+
+                        if(y == 7) // when in last column
+                        {
+                                x++; // increment row
+                                y = 0;
+                                color = (color % 2); // makes sure that the next row begins with an alternating color
+                        }
+                        else
+                        {
+                                y++;
+                                color++; // alternating the colors for the CheckerBoardSpace constructor
+                        }
+
+                }
+
+	}
 
         // JavaDoc
         public void drawGameBoard(CheckerBoardState state) // use for updating display of game board
@@ -162,18 +182,16 @@ public class CheckerBoardAlternate extends JPanel implements MouseListener
 
                 /******************************** Adding Pieces to Board ********************************/
 
-		CheckerSquare[] squares = state.getSquares();
-
                 // creates the 24 game pieces --> player one's pieces are the first 12, and player two's pieces are second
 		int n = 0;
-                for( int i = 0 ; i < squares.length ; i++ )
+                for( CheckerSquare square : state.getSquares())
                 {
 
-			if (squares[i].getPiece().getType() != PieceType.EMPTY) {
-				if (squares[i].getPiece().getPlayer() == Player.ONE) {
-					drawnPieces[n++] = new GamePiece(Color.BLUE, squares[i].getIndex(), squares[i].getX(), squares[i].getY());
-				} else if (squares[i].getPiece().getPlayer() == Player.TWO) {
-					drawnPieces[n++] = new GamePiece(Color.GRAY, squares[i].getIndex(), squares[i].getX(), squares[i].getY());
+			if (square.getPiece().getType() != PieceType.EMPTY) {
+				if (square.getPiece().getPlayer() == Player.ONE) {
+					drawnPieces[n++] = new GamePiece(this, Color.BLUE, square.getIndex(), square.getPiece().getPlayer());
+				} else if (square.getPiece().getPlayer() == Player.TWO) {
+					drawnPieces[n++] = new GamePiece(this, Color.GRAY, square.getIndex(), square.getPiece().getPlayer());
 				}
 			}
 
@@ -188,57 +206,31 @@ public class CheckerBoardAlternate extends JPanel implements MouseListener
                 CheckerBoardSpace currentBoardSpace;
                 JLabel currentPieceNumber;
 
-                boolean placeFirst = true;
-                boolean placeSecond = true;
-
-                int curLocation = 0;
-                int curPieceIndexOne = 0; // for player one
-                int curPieceIndexTwo = 0; // for player two
 
 		int[] playerOnePiecesLocations = state.getPlayerOnePieceLocationsInts();
-		int playerOnePiecesLeft = playerOnePiecesLocations.length; 
 		int[] playerTwoPiecesLocations = state.getPlayerTwoPieceLocationsInts();
-		int playerTwoPiecesLeft = playerTwoPiecesLocations.length;
+
+		int curLocation = 0;
 
                 while( curLocation < 64 ) // cycles through full board
                 {
 
                         currentBoardSpace = boardSpaces[curLocation];
 
-
-                        if( placeFirst && curLocation == playerOnePiecesLocations[curPieceIndexOne] ) // if a one of player one's pieces should be placed here
-                        {
-                                        // selects one of player one's pieces for adding it to the game display
-                                currentPiece = drawnPieces[curPieceIndexOne];
-                                currentPiece.setBackground(currentBoardSpace.spaceColor);
-                                gameBoardWithPieces.add(currentPiece);
-                                curPieceIndexOne++;
-
-                                if(curPieceIndexOne == playerOnePiecesLeft)
-                                {
-                                        placeFirst = false; // all of player one's pieces have been placed
-                                }
-                        }
-
-                        else if( placeSecond && curLocation == playerTwoPiecesLocations[curPieceIndexTwo] ) // if one of player two's pieces should be placed here
-                        {
-                                        // selects one of player two's pieces for adding it to the display
-                                currentPiece = drawnPieces[curPieceIndexTwo+playerOnePiecesLeft]; // index is calculated this way due to structure of drawnPieces array
-                                currentPiece.setBackground(currentBoardSpace.spaceColor);
-                                gameBoardWithPieces.add(currentPiece);
-                                curPieceIndexTwo++;
-
-                                if(curPieceIndexTwo == playerTwoPiecesLeft)
-                                {
-                                        placeSecond = false; // all of player two's pieces have been placed
-                                }
-                        }
-
-
-                        else
-                        {
+			boolean found = false;
+			for (GamePiece piece : drawnPieces) {
+				if (piece != null && piece.getIndex() == curLocation) {
+					currentPiece = piece;
+					currentPiece.setBackground(currentBoardSpace.getSpaceColor());
+					gameBoardWithPieces.add(currentPiece);
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
                                 gameBoardWithPieces.add(currentBoardSpace); // the current space is empty
-                        }
+			}
+
                         curLocation++; // go to next square
                 }
 
@@ -247,73 +239,104 @@ public class CheckerBoardAlternate extends JPanel implements MouseListener
         }
 
 
+	public void clearHighlights() {
+		if (extraJumpMode) {
+			return;
+		}
+		for (GamePiece piece : this.drawnPieces) {
+			if (piece != null) {
+				piece.deselect();
+			}
+		}
+		for (CheckerBoardSpace space : this.boardSpaces) {
+			if (space != null) {
+				space.dehighlight();
+			}
+		}
+	}
+
+	public void showAllowedMoves(CheckerSquare square) {
+		List<CheckerMove> moves = this.state.getValidMoves(square);
+		for (CheckerMove move : moves) {
+			this.boardSpaces[move.getEnd().getIndex()].highlight();
+		}
+	}
 
 
+        public void setSelected(int index) {
+		CheckerSquare square = this.state.getSquare(index);
 
-        // public void removePiece(int whichPlayer, int locationToRemoveFrom)     // locationToRemoveFrom = 0 to 63
-        // {
-        //                 // array of game pieces and  that should remain after the removal
-        //         int B = 0;
+		// only let active player select
+		if (square.getPiece().getPlayer() == this.activePlayer) {
+			this.selectedSquare = square;
+                        this.showAllowedMoves(this.selectedSquare);
+		}
+	}
 
-        //         if(whichPlayer == 1)
-        //         {
+        public boolean isInExtraJumpMode() {
+                return this.extraJumpMode;
+        }
 
-        //                 int[] tempOneLocations = new int[ this.playerOnePiecesLocations.length - 1 ];
-        //                 this.playerOnePiecesLeft--;
+	public void moveTo(int index) {
+		this.extraJumpMode = false;
 
-        //                 B = 0;
-        //                 for(int A = 0 ; A < this.playerOnePiecesLocations.length ; A++)
-        //                 {
-        //                         if( this.drawnPieces[A].gameBoardIndex != locationToRemoveFrom )
-        //                         {
-        //                                 tempOneLocations[B] = this.playerOnePiecesLocations[A];
-        //                                 B++;
-        //                         }
-        //                 }
-        //                 this.playerOnePiecesLocations = new int [ tempOneLocations.length - 1 ];
-        //                 this.playerOnePiecesLocations = tempOneLocations;
+		CheckerSquare targetSquare = this.state.getSquare(index);
+		CheckerMove move = new CheckerMove(this.selectedSquare, targetSquare);
 
-        //         }
+		// actually modify the board
+		this.state.executeMove(move);
 
-        //         else
-        //         {
-        //                 int[] tempTwoLocations = new int[ this.playerTwoPiecesLocations.length - 1 ];
-        //                 this.playerTwoPiecesLeft--;
+		// cleanup everything
+		this.removeAll();
 
+		// re init everything
+                this.gameBoard = new JLayeredPane();
+                this.gameBoard = frame.getLayeredPane();
+                this.gameBoard.setPreferredSize(new Dimension(640, 640));
 
-        //                 B = 0;
-        //                 for(int A = 0 ; A < this.playerTwoPiecesLocations.length ; A++)
-        //                 {
-        //                         if( this.drawnPieces[ A + this.playerOnePiecesLeft ].gameBoardIndex != locationToRemoveFrom )
-        //                         {
-        //                                 tempTwoLocations[B] = this.playerTwoPiecesLocations[A];
-        //                                 B++;
-        //                         }
-        //                 }
-        //                 this.playerTwoPiecesLocations = new int [ tempTwoLocations.length - 1 ];
-        //                 this.playerTwoPiecesLocations = tempTwoLocations;
-        //         }
+                this.gameBoardWithPieces = new Container();
+                this.gameBoardWithPieces.setSize(640, 640);
+                this.gameBoardWithPieces.setMaximumSize( new Dimension(640, 640) );
+                this.gameBoardWithPieces.setLayout( new GridLayout(8,8) );
+                this.gameBoardWithPieces.setBackground(Color.BLACK);
 
-        //         GamePiece[] tempPieces = new GamePiece[ this.drawnPieces.length - 1 ];
-        //         B = 0;
+		this.gameBoardWithPieces.addMouseListener(this);
 
-        //         for( int A = 0 ; A < this.drawnPieces.length ; A++ )
-        //         {
-        //                 if( this.drawnPieces[A].gameBoardIndex != locationToRemoveFrom )
-        //                 {
-        //                         tempPieces[B] = this.drawnPieces[A];
-        //                         B++;
-        //                 }
-        //         }
-        //         this.drawnPieces = new GamePiece[ tempPieces.length ];
-        //         this.drawnPieces = tempPieces;
+                boardSpaces = new CheckerBoardSpace[64];
+                drawnPieces = new GamePiece[24]; // all of player one's pieces will
 
-        // }
+		// redraw
+		this.drawGameBackground();
+                this.drawGameBoard(state); // draws the board at its initial state
 
+		// handle extra jumps
+		List<CheckerMove> extraJumps = this.state.getValidDoubleJumps(move.getEnd());
+		if (move.isDoubleJump() && extraJumps.size() > 0) {
+			this.extraJumpMode = true;
+			for (GamePiece piece : this.drawnPieces) {
+				if (piece != null && piece.getIndex() == move.getEnd().getIndex()) {
+					piece.select();
+				}
+			}
+			for (CheckerMove move2 : extraJumps) {
+				this.boardSpaces[move2.getEnd().getIndex()].highlight();
+			}
+		} else {
+			this.switchPlayer();
+		}
+	}
 
+	public void switchPlayer() {
+		if (this.activePlayer == Player.ONE) {
+			this.activePlayer = Player.TWO;
+		} else if (this.activePlayer == Player.TWO) {
+			this.activePlayer = Player.ONE;
+		}
+	}
 
-
-
+	public Player getActivePlayer() {
+		return this.activePlayer;
+	}
 
         public static void main(String[] args)
         {
