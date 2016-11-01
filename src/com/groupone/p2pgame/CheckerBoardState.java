@@ -103,7 +103,14 @@ public class CheckerBoardState {
         if (move.isSingleJump()) { // single jump
             // okay
         } else if (move.isDoubleJump()) { // double jump
-            // okay
+
+            CheckerSquare middle = this.getMiddleSquare(move);
+            if (middle.getPiece().getType() == PieceType.EMPTY) {
+                return false;
+            } else if (move.getStart().getPiece().getPlayer() == middle.getPiece().getPlayer()) {
+                return false;
+            }
+
         } else {
             return false;
         }
