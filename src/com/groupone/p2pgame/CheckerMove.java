@@ -28,4 +28,8 @@ public class CheckerMove {
     public CheckerSquare getEnd () {
 	return this.end;
     }
+
+    public String toString() {
+        return "From " + this.getStart().getX() + ", " + this.getStart().getY() + " to " + this.getEnd().getX() + ", " + this.getEnd().getY();
+    }
 }
