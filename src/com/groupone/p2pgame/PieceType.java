@@ -3,7 +3,7 @@ package com.groupone.p2pgame;
 /**
    PieceType stores the type of the piece that is being used. This is
    very important because each piece type has different behaviors.
-   @see GameBoardState
+   @see CheckerBoardState
  */
 public enum PieceType {
     EMPTY, // the default

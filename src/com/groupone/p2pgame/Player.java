@@ -3,7 +3,7 @@ package com.groupone.p2pgame;
 /**
    Player holds identifiers for each player. This is used to store
    data within the GameBoard.
-   @see GameBoardState
+   @see CheckerBoardState
  */
 public enum Player {
     NONE, // default value
