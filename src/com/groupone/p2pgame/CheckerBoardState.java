@@ -37,6 +37,10 @@ public class CheckerBoardState {
         return this.squares[index];
     }
 
+    public CheckerSquare getSquareAtPoint(int x, int y) {
+        return this.getSquare(y * 8 + x);
+    }
+
     public void addPieceAtIndex(Piece piece, int index) {
         this.squares[index].setPiece(piece);
     }
