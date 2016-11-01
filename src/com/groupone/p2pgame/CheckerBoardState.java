@@ -111,6 +111,12 @@ public class CheckerBoardState {
         return true;
     }
 
+    public CheckerSquare getMiddleSquare(CheckerMove move) {
+        int dx = move.getEnd().getX() - move.getStart().getX();
+        int dy = move.getEnd().getY() - move.getStart().getY();
+        return this.getSquareAtPoint(move.getStart().getX() + dx / 2, move.getStart().getY() + dy / 2);
+    }
+
     public List<CheckerMove> getValidMoves(CheckerSquare square1) {
         List<CheckerMove> moves = new ArrayList<CheckerMove>();
         for (CheckerSquare square2 : getSquares()) {
@@ -139,6 +145,12 @@ public class CheckerBoardState {
 
         // set square to empty piece
         this.squares[move.getStart().getIndex()].setPiece(new Piece());
+
+        // capture piece on double jump
+        if (move.isDoubleJump()) {
+            CheckerSquare square = this.getMiddleSquare(move);
+            this.squares[square.getIndex()].setPiece(new Piece());
+        }
 
         // king me
         if (move.getStart().getPiece().getPlayer() == Player.ONE &&
