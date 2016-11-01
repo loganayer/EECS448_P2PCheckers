@@ -6,9 +6,21 @@ package com.groupone.p2pgame;
    @see CheckerBoardState
  */
 public enum PieceType {
-    EMPTY, // the default
-    PAWN, // the starting for each player's pieces
-    KING, // obtained once reached the top row for player two or the
-	  // bottom row for player one
+    /**
+       Default empty value.
+     */
+    EMPTY,
+
+    /**
+       The starting piece for each player's pieces.
+     */
+    PAWN,
+
+    /**
+       Obtained once reached the top row for player two or the bottom
+       row for player one.
+    */
+    KING,
+
     // more?
 }

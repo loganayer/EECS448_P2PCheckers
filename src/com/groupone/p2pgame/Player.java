@@ -6,8 +6,20 @@ package com.groupone.p2pgame;
    @see CheckerBoardState
  */
 public enum Player {
-    NONE, // default value
-    ONE, // player one will have this
-    TWO, // player two will have this
+    /**
+       Default value when space is empty.
+    */
+    NONE,
+
+    /**
+       Player one will have this.
+    */
+    ONE,
+
+    /**
+       Player two will have this.
+     */
+    TWO,
+
     // more?
 }
