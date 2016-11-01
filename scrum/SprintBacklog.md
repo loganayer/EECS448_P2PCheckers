@@ -2,32 +2,25 @@
 #####Estimation: increased amount of importance/ required effort reflected in ascending numbers
 
 1.	Game Display
- -	
- -	Estimation: 2
-
-
+ - Completed: yes
+ -	Estimation: 1 week
 
 2.	Movement of Pieces
- -	
- -	Estimation: 
-
-
+ - Completed: yes
+ -	Estimation: 4 days
 
 3.	Removal of Pieces
- -	
- -	Estimation: 
-
-
+ - Completed: yes
+ -	Estimation: 2 days
 
 4.	User Interaction
- -	
- -	Estimation: 
-
-
+ - Completed: yes
+ -	Estimation: 4 days
 
 5.	Server Communication
- -	
- -	Estimation: 
+ - Completed: in progress
+ -	Estimation: 1 week
 
-
-
+6. Game Logic/rules
+ - Complted: yes
+ - Estimation: 1 week
