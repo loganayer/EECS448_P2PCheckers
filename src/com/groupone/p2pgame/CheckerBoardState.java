@@ -160,12 +160,12 @@ public class CheckerBoardState {
         }
 
         // king me
-        if (move.getStart().getPiece().getPlayer() == Player.ONE &&
-            move.getEnd().getY() == 0) {
-            move.getStart().getPiece().king();
-        } else if (move.getStart().getPiece().getPlayer() == Player.TWO &&
-                   move.getEnd().getY() == 7) {
-            move.getStart().getPiece().king();
+        if (move.getEnd().getPiece().getPlayer() == Player.ONE &&
+            move.getEnd().getY() == 7) {
+            move.getEnd().getPiece().king();
+        } else if (move.getEnd().getPiece().getPlayer() == Player.TWO &&
+                   move.getEnd().getY() == 0) {
+            move.getEnd().getPiece().king();
         }
     }
 }
