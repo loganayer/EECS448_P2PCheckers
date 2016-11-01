@@ -10,14 +10,14 @@ public class CheckerMove {
     }
 
     public boolean isDoubleJump() {
-	int dx = this.getEnd().getX() - getStart().getX();
-	int dy = this.getEnd().getY() - getStart().getY();
+	int dx = Math.abs(this.getEnd().getX() - getStart().getX());
+	int dy = Math.abs(this.getEnd().getY() - getStart().getY());
 	return dx == 2 && dy == 2;
     }
 
     public boolean isSingleJump() {
-	int dx = this.getEnd().getX() - getStart().getX();
-	int dy = this.getEnd().getY() - getStart().getY();
+	int dx = Math.abs(this.getEnd().getX() - getStart().getX());
+	int dy = Math.abs(this.getEnd().getY() - getStart().getY());
 	return dx == 1 && dy == 1;
     }
 
