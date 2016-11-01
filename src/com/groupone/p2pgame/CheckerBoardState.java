@@ -4,9 +4,19 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
-   Checker board state holds all of the data about the checker board displayed in CheckerBoardAlternate.
+   Checker board state holds all of the data about the checker board
+   displayed in CheckerBoardAlternate. The The checker board is held
+   in an array of 64 spaces. The the top left space is the first space
+   and the bottom right space is the last space. The checkerboard is
+   wrapped around after the 8th space so that the 8th space from the
+   right on the first row is followed by the 1st space on the left for
+   the second row. The wrapped order of these spaces is called the
+   "index" and is 0-indexed. It looks like this:
 
-   Some useful terms:
+     0 | 1 | 2 | 3 | 4 | 5 | 6 | 7
+     8 | 9 | ...
+
+   Some other useful terms:
 
    A "pawn" is one of the 24 starting pieces. Pawns can only go
    towards the other end of the board.

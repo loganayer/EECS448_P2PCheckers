@@ -398,9 +398,9 @@ public class CheckerBoardAlternate extends JPanel implements MouseListener
         /**
            Move the piece selected piece to index. Instead of just
            modifying the current board, this will first modify the
-           game board state then redraw everything. This is in place
-           to prevent the board UI from being out of sync with the
-           board Data Types.
+           game board state then redraw everything with the new state.
+           This is in place to prevent the board UI from being out of
+           sync with the board Data Types.
            @param index The current index of the 64 spaces to move to.
          */
 	public void moveTo(int index) {
