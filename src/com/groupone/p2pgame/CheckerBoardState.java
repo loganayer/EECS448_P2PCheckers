@@ -9,8 +9,8 @@ public class CheckerBoardState {
     public static CheckerBoardState getStartingBoard() {
         // original locations for pieces in top half of board
         // original locations for pieces in bottom half of board
-        int[] playerTwoLocations = new int[] {1, 3, 5, 7, 8, 10, 12, 14, 17, 19, 21, 23};
-        int[] playerOneLocations = new int[] {40, 42, 44, 46, 49, 51, 53, 55, 56, 58, 60, 62};
+        int[] playerOneLocations = new int[] {1, 3, 5, 7, 8, 10, 12, 14, 17, 19, 21, 23};
+        int[] playerTwoLocations = new int[] {40, 42, 44, 46, 49, 51, 53, 55, 56, 58, 60, 62};
 
         CheckerBoardState state = new CheckerBoardState();
         for (int index : playerOneLocations) {
@@ -89,9 +89,9 @@ public class CheckerBoardState {
         int dy = move.getEnd().getY() - move.getStart().getY();
 
         // check directions
-        if (dy >= 1 && move.getStart().getPiece().getPlayer() == Player.TWO) { // player two moves up
+        if (dy >= 1 && move.getStart().getPiece().getPlayer() == Player.ONE) { // player two moves up
             // okay
-        } else if (dy <= -1 && move.getStart().getPiece().getPlayer() == Player.ONE) { // player one moves up
+        } else if (dy <= -1 && move.getStart().getPiece().getPlayer() == Player.TWO) { // player one moves up
             // okay
         } else if (move.getStart().getPiece().getType() == PieceType.KING) {
             // okay
