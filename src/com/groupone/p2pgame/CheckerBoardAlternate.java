@@ -9,32 +9,56 @@ import java.awt.event.*;
 public class CheckerBoardAlternate extends JPanel implements MouseListener
 {
 
-        public JFrame frame;
-        public JLayeredPane gameBoard;
-        public Container gameBoardBackground;
-        public Container gameBoardWithPieces;
+        private JFrame frame;
+        private JLayeredPane gameBoard;
+        private Container gameBoardBackground;
+        private Container gameBoardWithPieces;
 
 
-        public CheckerBoardSpace[] boardSpaces;
-        public GamePiece[] drawnPieces;
+        private CheckerBoardSpace[] boardSpaces;
+        private GamePiece[] drawnPieces;
 
 
-        public int[] playerOnePiecesLocations;
-        public static int[] playerTwoPiecesLocations; //ex playerTwoPiecesLocations[3]==42 third piece and 42/63 on the board
-        public int[] currentLocations;
+        private int[] playerOnePiecesLocations;
+        private int[] playerTwoPiecesLocations; //ex playerTwoPiecesLocations[3]==42 third piece and 42/63 on the board
+        private int[] currentLocations;
 
 
-        public int playerOnePiecesLeft;
-        public int playerTwoPiecesLeft;
+        private int playerOnePiecesLeft;
+        private int playerTwoPiecesLeft;
 
 
+        /**
+           Start a new game board.
+        */
+        public CheckerBoardAlternate() {
+                this(new int[] {1, 3, 5, 7, 8, 10, 12, 14, 17, 19, 21, 23},
+                     new int[] {40, 42, 44, 46, 49, 51, 53, 55, 56, 58, 60, 62});
+                // original locations for pieces in top half of board
+                // original locations for pieces in bottom half of board
+        }
 
+        /**
+           Setup a checkerboard from a checkerboard state
+        */
+        public CheckerBoardAlternate(CheckerBoardState state) {
+                this(state.getPlayerOnePieceLocationsInts(), state.getPlayerTwoPieceLocationInts());
+        }
 
-
-        public CheckerBoardAlternate()
+        /**
+           Setup a checkerboard from player one and player two piece locations
+        */
+        public CheckerBoardAlternate(int[] playerOnePiecesLocations, int[] playerTwoPiecesLocations)
         {
 
                 super();
+
+                this.playerOnePiecesLocations = playerOnePiecesLocations;
+                this.playerTwoPiecesLocations = playerTwoPiecesLocations;
+
+                // for beginning of game
+                this.playerOnePiecesLeft = playerOnePiecesLocations.length;
+                this.playerTwoPiecesLeft = playerTwoPiecesLocations.length;
 
                 /******************************** Display Characteristics ********************************/
 
@@ -54,10 +78,6 @@ public class CheckerBoardAlternate extends JPanel implements MouseListener
 
                 boardSpaces = new CheckerBoardSpace[64];
                 drawnPieces = new GamePiece[24]; // all of player one's pieces will be placed in this array before player two's pieces
-
-                        // for beginning of game
-                playerOnePiecesLeft = 12;
-                playerTwoPiecesLeft = 12;
 
                 /********************************  ********************************/
 
@@ -106,10 +126,6 @@ public class CheckerBoardAlternate extends JPanel implements MouseListener
 
                 /******************************** Adding Pieces to Board ********************************/
 
-                playerOnePiecesLocations = new int[] {1, 3, 5, 7, 8, 10, 12, 14, 17, 19, 21, 23}; // original locations for pieces in top half of board
-                playerTwoPiecesLocations = new int[] {40, 42, 44, 46, 49, 51, 53, 55, 56, 58, 60, 62}; // original locations for pieces in bottom half of board
-                currentLocations = new int[] {0,1,0,1,0,1,0,1,1,0,1,0,1,0,1,0,0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                  2,0,2,0,2,0,2,0,0,2,0,2,0,2,0,2,2,0,2,2,0,2}; //1==p1, 0==empty, 2== p2
 
 
                 int curX; // row number
@@ -149,6 +165,20 @@ public class CheckerBoardAlternate extends JPanel implements MouseListener
         }
 
 
+        /**
+           Get the current state of board.
+        */
+        public CheckerBoardState getBoardState()
+        {
+                CheckerBoardState state = new CheckerBoardState();
+                for (int index : playerOnePiecesLocations) {
+                        state.addPieceAtIndex(new Piece(PieceType.PAWN, Player.ONE), index);
+                }
+                for (int index : playerTwoPiecesLocations) {
+                        state.addPieceAtIndex(new Piece(PieceType.PAWN, Player.TWO), index);
+                }
+                return state;
+        }
 
 
         //MOUSE locations THIS DOESNT DO ANYTHING THE REAL CODE IS FAR BELOW
