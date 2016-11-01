@@ -32,7 +32,7 @@
 
 
 6.	Win Conditions
- -	The server should be able to end the game when the game’s win conditions, as defined by the standard Checkers rules, have been satisfied.
+ -	The server should be able to end the game when the game’s win conditions, as defined by the standard Checkers rules, have been satisfied. A screen should also be shown indicating who has won
  -	Estimation: 2
 
 
@@ -44,32 +44,36 @@
 
 
 8.	Updating Game Displays
- -	
+ -	The boards should update based on the move made by the player and the data sent from the server.
  -	Estimation: 
 
 
 
 9.	User Interaction
- -	
+ -	The user should be able to click on a piece and move it.
  -	Estimation: 
 
 
+10. Indicate whose turn it is
+ - There should be some clear way to say "this is Player 1/2's turn"
+ - Estimation: 1
 
-10.	Name:
- -	
- -	Estimation: 
+11. Drag and drop piece
+ - Make game closer to real checkers where player clicks and drags checkers piece to correct play
+ - Estimation: 2
 
+12. Add undo button
+ - The player may accidentally make a move that was not indended. Have a button to undo that.
+ - Estimation: 4
 
+13. Add piece move animation
+ - When on networked mode, show the piece moving clearly with an animation
+ - Estimation: 3
 
-11.	Name:
- -	
- -	Estimation: 
+14. Indicate which pieces are kings
+ - Right now, there is no indicator for which piece is a king or not. This will probably require making image assets.
+ - Estimation: 1
 
-
-
-12.	Name:
- -	
- -	Estimation: 
-
-
-
+15. Add user profiles
+ - Keep track of user's stats from game to game.
+ - Estimation: 5
