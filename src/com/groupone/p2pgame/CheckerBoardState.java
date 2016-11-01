@@ -3,8 +3,24 @@ package com.groupone.p2pgame;
 import java.util.List;
 import java.util.ArrayList;
 
-public class CheckerBoardState extends Board {
+public class CheckerBoardState {
     private CheckerSquare[] squares;
+
+    public static CheckerBoardState getStartingBoard() {
+        // original locations for pieces in top half of board
+        // original locations for pieces in bottom half of board
+        int[] playerTwoLocations = new int[] {1, 3, 5, 7, 8, 10, 12, 14, 17, 19, 21, 23};
+        int[] playerOneLocations = new int[] {40, 42, 44, 46, 49, 51, 53, 55, 56, 58, 60, 62};
+
+        CheckerBoardState state = new CheckerBoardState();
+        for (int index : playerOneLocations) {
+            state.addPieceAtIndex(new Piece(PieceType.PAWN, Player.ONE), index);
+        }
+        for (int index : playerTwoLocations) {
+            state.addPieceAtIndex(new Piece(PieceType.PAWN, Player.TWO), index);
+        }
+        return state;
+    }
 
     public CheckerBoardState () {
         this.squares = new CheckerSquare[64];
@@ -23,7 +39,7 @@ public class CheckerBoardState extends Board {
 
     public List<Integer> getPieceLocations(Piece piece) {
         List result = new ArrayList<Integer>();
-        for (CheckerSquare square : squares) {
+        for (CheckerSquare square : this.squares) {
             if (square.getPiece().matches(piece)) {
                 result.add(square.getIndex());
             }
@@ -45,7 +61,7 @@ public class CheckerBoardState extends Board {
         return this.getPieceLocationsInts(new Piece(PieceType.PAWN, Player.ONE));
     }
 
-    public int[] getPlayerTwoPieceLocationInts() {
+    public int[] getPlayerTwoPieceLocationsInts() {
         return this.getPieceLocationsInts(new Piece(PieceType.PAWN, Player.TWO));
     }
 }
