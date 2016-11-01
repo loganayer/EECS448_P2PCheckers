@@ -34,71 +34,74 @@ public class GamePiece extends JPanel implements MouseListener
         {
                 if(ispressed==false)
                 {
-                super.paintComponent(graphics);
-                graphics.setColor(this.pieceColor);
-                graphics.drawOval(10, 10, 60, 60);
-                graphics.fillOval(10, 10, 60, 60);
+		    super.paintComponent(graphics);
+		    graphics.setColor(this.pieceColor);
+		    graphics.drawOval(10, 10, 60, 60);
+		    graphics.fillOval(10, 10, 60, 60);
                 }
                 if(ispressed==true) //selected border
                 {
-                  super.paintComponent(graphics);
-                  graphics.setColor(Color.YELLOW);
-                  graphics.drawOval(8, 8, 64, 64);
-                  graphics.fillOval(8, 8, 64, 64);
-                  graphics.setColor(this.pieceColor);
-                  graphics.drawOval(10, 10, 60, 60);
-                  graphics.fillOval(10, 10, 60, 60);
-
+		    super.paintComponent(graphics);
+		    graphics.setColor(Color.YELLOW);
+		    graphics.drawOval(8, 8, 64, 64);
+		    graphics.fillOval(8, 8, 64, 64);
+		    graphics.setColor(this.pieceColor);
+		    graphics.drawOval(10, 10, 60, 60);
+		    graphics.fillOval(10, 10, 60, 60);
                 }
-
         }
 
-public void mousePressed(MouseEvent e) {
-  if(currentLocations[this.xBoardLocation*8 + this.yBoardLocation]==2)
-  {
-    ispressed=true;
-    isSelected=true;
-    System.out.println("testPress");
-    repaint();
-  }
-
-}
-
-public void mouseReleased(MouseEvent e) {
-  if(currentLocations[this.xBoardLocation*8 + this.yBoardLocation]==2 && currentLocations[(this.xBoardLocation-1)*8 + this.yBoardLocation-1]==0)
-  {
-    currentLocations[this.xBoardLocation*8 + this.yBoardLocation]=0;
-    this.xBoardLocation=this.xBoardLocation-1;
-    this.yBoardLocation=this.yBoardLocation-1;
-    currentLocations[this.xBoardLocation*8 + this.yBoardLocation]=2;
-    repaint();
-    System.out.println("testMoved");
-
-  }
-  System.out.println("testReleased");
-
-}
-
-public void mouseEntered(MouseEvent e) {
-
-}
-
-public void mouseExited(MouseEvent e) {
-
-}
-
-public void mouseClicked(MouseEvent e) {
+	public void onPressed() {
+		
+	}
 
 
-  if(isSelected)
-  {
-    ispressed=false;
-    System.out.println("testClicked");
-    repaint();
-                    //testBoard.removePiece(1, 3);
+	public void mousePressed(MouseEvent e) {
+	if(currentLocations[this.xBoardLocation*8 + this.yBoardLocation]==2)
+	    {
+		ispressed=true;
+		isSelected=true;
+		System.out.println("testPress");
+		repaint();
+	    }
 
-  }
+    }
 
-}
+    public void mouseReleased(MouseEvent e) {
+	if(currentLocations[this.xBoardLocation*8 + this.yBoardLocation]==2 && currentLocations[(this.xBoardLocation-1)*8 + this.yBoardLocation-1]==0)
+	    {
+		currentLocations[this.xBoardLocation*8 + this.yBoardLocation]=0;
+		this.xBoardLocation=this.xBoardLocation-1;
+		this.yBoardLocation=this.yBoardLocation-1;
+		currentLocations[this.xBoardLocation*8 + this.yBoardLocation]=2;
+		repaint();
+		System.out.println("testMoved");
+
+	    }
+	System.out.println("testReleased");
+
+    }
+
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    public void mouseClicked(MouseEvent e) {
+
+
+	if(isSelected)
+	    {
+		ispressed=false;
+		System.out.println("testClicked");
+		repaint();
+		//testBoard.removePiece(1, 3);
+
+	    }
+
+    }
 
 }

@@ -25,12 +25,37 @@ public class CheckerBoardAlternate extends JPanel
         private int playerTwoPiecesLeft;
 
 
+        /**
+           Start a new game board.
+        */
+        public CheckerBoardAlternate() {
+                this(new int[] {1, 3, 5, 7, 8, 10, 12, 14, 17, 19, 21, 23},
+                     new int[] {40, 42, 44, 46, 49, 51, 53, 55, 56, 58, 60, 62});
+                // original locations for pieces in top half of board
+                // original locations for pieces in bottom half of board
+        }
 
+        /**
+           Setup a checkerboard from a checkerboard state
+        */
+        public CheckerBoardAlternate(CheckerBoardState state) {
+                this(state.getPlayerOnePieceLocationsInts(), state.getPlayerTwoPieceLocationInts());
+        }
 
-        public CheckerBoardAlternate()
+        /**
+           Setup a checkerboard from player one and player two piece locations
+        */
+        public CheckerBoardAlternate(int[] playerOnePiecesLocations, int[] playerTwoPiecesLocations)
         {
 
                 super();
+
+                this.playerOnePiecesLocations = playerOnePiecesLocations;
+                this.playerTwoPiecesLocations = playerTwoPiecesLocations;
+
+                // for beginning of game
+                this.playerOnePiecesLeft = playerOnePiecesLocations.length;
+                this.playerTwoPiecesLeft = playerTwoPiecesLocations.length;
 
                 /******************************** Display Characteristics ********************************/
 
@@ -50,10 +75,6 @@ public class CheckerBoardAlternate extends JPanel
 
                 boardSpaces = new CheckerBoardSpace[64];
                 drawnPieces = new GamePiece[24]; // all of player one's pieces will be placed in this array before player two's pieces
-
-                        // for beginning of game
-                playerOnePiecesLeft = 12;
-                playerTwoPiecesLeft = 12;
 
                 /********************************  ********************************/
 
@@ -102,10 +123,6 @@ public class CheckerBoardAlternate extends JPanel
 
                 /******************************** Adding Pieces to Board ********************************/
 
-                playerOnePiecesLocations = new int[] {1, 3, 5, 7, 8, 10, 12, 14, 17, 19, 21, 23}; // original locations for pieces in top half of board
-                playerTwoPiecesLocations = new int[] {40, 42, 44, 46, 49, 51, 53, 55, 56, 58, 60, 62}; // original locations for pieces in bottom half of board
-                currentLocations = new int[] {0,1,0,1,0,1,0,1,1,0,1,0,1,0,1,0,0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                  2,0,2,0,2,0,2,0,0,2,0,2,0,2,0,2,2,0,2,2,0,2}; //1==p1, 0==empty, 2== p2
 
 
                 int curX; // row number
@@ -144,6 +161,20 @@ public class CheckerBoardAlternate extends JPanel
         }
 
 
+        /**
+           Get the current state of board.
+        */
+        public CheckerBoardState getBoardState()
+        {
+                CheckerBoardState state = new CheckerBoardState();
+                for (int index : playerOnePiecesLocations) {
+                        state.addPieceAtIndex(new Piece(PieceType.PAWN, Player.ONE), index);
+                }
+                for (int index : playerTwoPiecesLocations) {
+                        state.addPieceAtIndex(new Piece(PieceType.PAWN, Player.TWO), index);
+                }
+                return state;
+        }
 
 
 
