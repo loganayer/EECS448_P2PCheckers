@@ -6,6 +6,9 @@ import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.awt.event.*;
 
+/**
+   A game piece UI element that is represented on-screen as an oval.
+*/
 public class GamePiece extends JPanel implements MouseListener
 {
 
@@ -17,42 +20,84 @@ public class GamePiece extends JPanel implements MouseListener
 
         private CheckerBoardAlternate board;
 
+        /**
+           Create a new game piece.
+           @param board The board that created this GamePiece, needed
+           to send back details once it has been selected.
+           @param color The color that this game piece should be.
+           @param index The index that this piece occupies.
+           @param player The player that owns this piece.
+        */
         public GamePiece(CheckerBoardAlternate board, Color color, int index, Player player)
         {
-                this.addMouseListener(this);
+                this.addMouseListener(this); // setup mouse listener
                 this.pieceColor = color;
 		this.board = board;
                 this.gameBoardIndex = index;
                 this.player = player;
         }
 
+        /**
+           Update the graphics of the oval.
+           @param graphics The graphics to draw to.
+         */
+	@Override
         public void paintComponent(Graphics graphics)
         {
+                // make sure we let others do stuff
                 super.paintComponent(graphics);
+
+                // check if we should draw the yellow halo around it
+                // this must be done first
                 if (isPressed) {
                         graphics.setColor(Color.YELLOW);
                         graphics.drawOval(8, 8, 64, 64);
                         graphics.fillOval(8, 8, 64, 64);
                 }
+
+                // darw the ordinary piece
                 graphics.setColor(this.pieceColor);
                 graphics.drawOval(10, 10, 60, 60);
                 graphics.fillOval(10, 10, 60, 60);
 
         }
 
+        /**
+           Select the game piece, show the yellow halo if we are an
+           active player.
+         */
         public void select() {
+                // check if the board's active player is us
                 if (this.board.getActivePlayer() == this.player) {
+                        // setup the halo
                         isPressed=true;
-                        repaint();
+                        repaint(); // make sure we repaint
+
+                        // tell the board we are chosen
                         this.board.setSelected(gameBoardIndex);
                 }
         }
 
+        /**
+           Deselect the game piece, remove the yellow halo.
+        */
         public void deselect() {
-                isPressed = false;
-                repaint();
+                isPressed = false; // get rid of yellow halo
+                repaint(); // make sure we repaint
         } 
-        
+
+        /**
+           Get the index of the piece in the game board.
+         */
+        public int getIndex() {
+                return this.gameBoardIndex;
+        }
+
+        /**
+           Clear the selected pieces on the board, then Select this
+           piece.
+        */
+	@Override
         public void mousePressed(MouseEvent e) {
                 if (!this.board.isInExtraJumpMode()) {
                         this.board.clearHighlights();
@@ -60,19 +105,19 @@ public class GamePiece extends JPanel implements MouseListener
                 }
         }
 
+	@Override
         public void mouseReleased(MouseEvent e) {
         }
 
+	@Override
         public void mouseEntered(MouseEvent e) {
         }
 
+	@Override
         public void mouseExited(MouseEvent e) {
         }
 
+	@Override
         public void mouseClicked(MouseEvent e) {
-        }
-
-        public int getIndex() {
-                return this.gameBoardIndex;
         }
 }
