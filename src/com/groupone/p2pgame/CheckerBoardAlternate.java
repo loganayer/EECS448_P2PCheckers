@@ -406,25 +406,11 @@ public class CheckerBoardAlternate extends JPanel implements MouseListener
         }
 
         /**
-           Move the piece selected piece to index. Instead of just
-           modifying the current board, this will first modify the
-           game board state then redraw everything with the new state.
-           This is in place to prevent the board UI from being out of
-           sync with the board Data Types.
-           @param index The current index of the 64 spaces to move to.
+           Redraw all of the UI elements. This will remove everything
+           from the board, then re init everything, then draw the
+           board state again.
          */
-	public void moveTo(int index) {
-                // disable extra jump mode after movement
-		this.extraJumpMode = false;
-
-                // calculate targetSquare and create the new "move" in
-                // board Data Types.
-		CheckerSquare targetSquare = this.state.getSquare(index);
-		CheckerMove move = new CheckerMove(this.selectedSquare, targetSquare);
-
-		// actually modify the board
-		this.state.executeMove(move);
-
+        public void redrawAll() {
 		// cleanup everything
 		this.removeAll();
 
@@ -448,6 +434,30 @@ public class CheckerBoardAlternate extends JPanel implements MouseListener
 		this.drawGameBackground();
 
                 this.drawGameBoard(state); // draws the board at its new state
+        }
+
+        /**
+           Move the piece selected piece to index. Instead of just
+           modifying the current board, this will first modify the
+           game board state then redraw everything with the new state.
+           This is in place to prevent the board UI from being out of
+           sync with the board Data Types.
+           @param index The current index of the 64 spaces to move to.
+         */
+	public void moveTo(int index) {
+                // disable extra jump mode after movement
+		this.extraJumpMode = false;
+
+                // calculate targetSquare and create the new "move" in
+                // board Data Types.
+		CheckerSquare targetSquare = this.state.getSquare(index);
+		CheckerMove move = new CheckerMove(this.selectedSquare, targetSquare);
+
+		// actually modify the board
+		this.state.executeMove(move);
+
+                // tell board to redraw everything
+                this.redrawAll();
 
 		// handle extra jumps
 		List<CheckerMove> extraJumps = this.state.getValidDoubleJumps(move.getEnd());
