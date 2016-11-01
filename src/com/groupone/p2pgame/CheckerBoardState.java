@@ -31,11 +31,16 @@ import java.util.ArrayList;
      X | X | X    X | X | X   X | X | X   K | X | X   X | X | K
 
    A "single jump" in this context is a move diagonally obeying the
-   usual rules of checkers.
+   usual rules of checkers. Each of the examples above is a single
+   jump.
 
    A "double jump" is where the user moves twice diagonally in one
    direction while also passing a piece of the other player. This
    results in the other player's piece being removed from the game.
+
+     X | X | X    X | X | P2
+     X | P1| X -> X | X | X
+     P2| X | X    X | X | X
 
 */
 public class CheckerBoardState {
