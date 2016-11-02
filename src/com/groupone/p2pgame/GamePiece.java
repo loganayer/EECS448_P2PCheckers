@@ -17,7 +17,9 @@ public class GamePiece extends JPanel implements MouseListener
         private boolean isPressed = false;
         private int gameBoardIndex;
         private Player player;
-
+        private boolean kingMe=false;
+        private char[] kingChar = {'K'};
+        private String kingString = "K";
         private CheckerBoardAlternate board;
 
         /**
@@ -59,7 +61,16 @@ public class GamePiece extends JPanel implements MouseListener
                 graphics.setColor(this.pieceColor);
                 graphics.drawOval(10, 10, 60, 60);
                 graphics.fillOval(10, 10, 60, 60);
+              /*
+                if(kingMe)
+                {
 
+                  graphics.setColor(Color.BLACK);
+                  graphics.drawChars(kingChar, 0, 1, 10, 10);
+                  graphics.drawString(kingString, 0,0);
+
+                }
+*/
         }
 
         /**
@@ -84,7 +95,7 @@ public class GamePiece extends JPanel implements MouseListener
         public void deselect() {
                 isPressed = false; // get rid of yellow halo
                 repaint(); // make sure we repaint
-        } 
+        }
 
         /**
            Get the index of the piece in the game board.
@@ -101,7 +112,13 @@ public class GamePiece extends JPanel implements MouseListener
         public void mousePressed(MouseEvent e) {
                 if (!this.board.isInExtraJumpMode()) {
                         this.board.clearHighlights();
+                        CheckerSquare square = this.board.state.getSquare(gameBoardIndex);
+                        if(this.board.state.getValidMoves(square).size() != 0)
+                        {
                         select();
+                      }
+                      //  kingMe=true;
+                        //repaint();
                 }
         }
 
@@ -111,10 +128,23 @@ public class GamePiece extends JPanel implements MouseListener
 
 	@Override
         public void mouseEntered(MouseEvent e) {
+          CheckerSquare square = this.board.state.getSquare(gameBoardIndex);
+          if(this.board.state.getValidMoves(square).size() != 0)
+          {
+          isPressed=true;
+          repaint();
+        }
         }
 
 	@Override
         public void mouseExited(MouseEvent e) {
+          CheckerSquare square = this.board.state.getSquare(gameBoardIndex);
+          if(this.board.state.getValidMoves(square).size() != 0)
+          {
+
+          isPressed=false;
+          repaint();
+        }
         }
 
 	@Override

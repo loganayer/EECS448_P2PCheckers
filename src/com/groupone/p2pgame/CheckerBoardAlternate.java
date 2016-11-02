@@ -55,7 +55,7 @@ public class CheckerBoardAlternate extends JPanel implements MouseListener
         private CheckerBoardSpace[] boardSpaces;
         private GamePiece[] drawnPieces;
 
-        private CheckerBoardState state;
+        public CheckerBoardState state;
 
         private CheckerSquare selectedSquare;
 
