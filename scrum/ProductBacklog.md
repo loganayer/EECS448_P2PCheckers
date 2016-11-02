@@ -45,13 +45,13 @@
 
 8.	Updating Game Displays
  -	The boards should update based on the move made by the player and the data sent from the server.
- -	Estimation: 
+ -	Estimation: 2
 
 
 
 9.	User Interaction
  -	The user should be able to click on a piece and move it.
- -	Estimation: 
+ -	Estimation: 4
 
 
 10. Indicate whose turn it is
